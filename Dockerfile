@@ -337,9 +337,15 @@ ARG BUILD_DEPS=" \
 # For Azure use, uncomment bellow
 #ARG SERVER_URL="http://zooprojectdemo.azurewebsites.net/"
 #ARG WS_SERVER_URL="ws://zooprojectdemo.azurewebsites.net"
+
 # For basic usage
-ARG SERVER_URL="http://localhost/"
-ARG WS_SERVER_URL="ws://localhost"
+# Define ARG variables with default values
+ARG SERVER_URL_DEFAULT="http://localhost/"
+ARG WS_SERVER_URL_DEFAULT="ws://localhost"
+
+# Use ENV to set the environment variables, allowing them to be overridden by existing environment variables
+ENV SERVER_URL=${SERVER_URL:-$SERVER_URL_DEFAULT}
+ENV WS_SERVER_URL=${WS_SERVER_URL:-$WS_SERVER_URL_DEFAULT}
 
 # For using another port than 80, uncomment below.
 # remember to also change the ports in docker-compose.yml
