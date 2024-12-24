@@ -316,9 +316,10 @@ ARG RUN_DEPS=" \
     gnuplot \
     locales \
     libapache2-mod-fcgid \
+    libapache2-mod-auth-openidc \
     python3-setuptools \
     #Uncomment the line below to add vi editor \
-    #vim \
+    vim \
     #Uncomment the lines below to add debuging \
     #valgrind \
     #gdb \
@@ -426,7 +427,7 @@ RUN set -ex \
     && sed "s:Title = $:Title = No title found:g" -i /usr/lib/cgi-bin/SAGA/*/*.zcfg \
     # Enable apache modules
     \
-    && a2enmod cgi rewrite \
+    && a2enmod cgi rewrite headers auth_openidc \
     \
     # Cleanup \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $BUILD_DEPS \
