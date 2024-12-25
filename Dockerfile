@@ -173,6 +173,7 @@ RUN set -ex \
     #&& msgfmt ../zoo-services/utils/open-api/locale/po/fr_FR.po -o /usr/share/locale/fr_FR/LC_MESSAGES/zoo-services.mo \
     #&& msgfmt ../zoo-services/utils/open-api/locale/po/fr_FR.po -o /usr/local/share/locale/fr_FR/LC_MESSAGES/zoo-services.mo \
     && cp oas.cfg /usr/lib/cgi-bin/ \
+    && cp security_service.py /usr/lib/cgi-bin/ \
     \
     # TODO: main.cfg is not processed \
     && prefix=/usr envsubst < main.cfg > /usr/lib/cgi-bin/main.cfg \
@@ -431,6 +432,8 @@ RUN set -ex \
     # Update SAGA zcfg
     && sed "s:AllowedValues =    <Default>:AllowedValues =\n    <Default>:g" -i /usr/lib/cgi-bin/SAGA/*/*zcfg \
     && sed "s:Title = $:Title = No title found:g" -i /usr/lib/cgi-bin/SAGA/*/*.zcfg \
+    # Update Security Service \
+    && sed "s#serviceType = C#serviceType = Python#g;s#serviceProvider = security_service.zo#serviceProvider = security_service#g" -i /usr/lib/cgi-bin/securityIn.zcfg \
     # Enable apache modules
     \
     && a2enmod cgi rewrite headers auth_openidc \
