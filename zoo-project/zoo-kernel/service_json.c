@@ -3550,11 +3550,50 @@ extern "C" {
     map* pmTmp=getMap(pmsTmp->content,"type");
     if(pmTmp!=NULL){
       json_object_object_add(poJsonObject,"type",json_object_new_string(pmTmp->value));
-      if(strcasecmp(pmTmp->value,"openIdConnect")==0){
+      if(strcasecmp(pmTmp->value,"openIdConnect")==0) {
+        /* Get the openIdConnectUrl if any, we don't need it for now
         pmTmp=getMap(pmsTmp->content,"openIdConnectUrl");
-        if(pmTmp!=NULL)
+        if(pmTmp!=NULL) {
           json_object_object_add(poJsonObject,"openIdConnectUrl",json_object_new_string(pmTmp->value));
-            }else{
+        } */
+
+        json_object_object_add(poJsonObject, "type", json_object_new_string("oauth2"));
+
+        // Get flow
+        map* pmFlow = getMap(pmsTmp->content, "openIdConnectFlow");
+        if (pmFlow != NULL && strcasecmp(pmFlow->value, "authorizationCode") == 0) {
+            json_object* flows = json_object_new_object();
+            json_object* authorizationCode = json_object_new_object();
+
+            // Get URLs
+            map* pmAuthorizationUrl = getMap(pmsTmp->content, "openIDConnectAuthorizationUrl");
+            map* pmTokenUrl = getMap(pmsTmp->content, "openIDConnectTokenUrl");
+            if (pmAuthorizationUrl != NULL) {
+                json_object_object_add(authorizationCode, "authorizationUrl", json_object_new_string(pmAuthorizationUrl->value));
+            }
+            if (pmTokenUrl != NULL) {
+                json_object_object_add(authorizationCode, "tokenUrl", json_object_new_string(pmTokenUrl->value));
+            }
+
+            // Get scopes
+            map* pmScopes = getMap(pmsTmp->content, "openIdConnectScopes");
+            if (pmScopes != NULL) {
+                json_object* scopes = json_object_new_object();
+                char* scope = strtok(pmScopes->value, ",");
+                while (scope != NULL) {
+                    json_object_object_add(scopes, scope, json_object_new_string(""));
+                    scope = strtok(NULL, ",");
+                }
+                json_object_object_add(authorizationCode, "scopes", scopes);
+            }
+
+            json_object_object_add(flows, "authorizationCode", authorizationCode);
+            json_object_object_add(poJsonObject, "flows", flows);
+        }
+
+        json_object_object_add(res, fName, poJsonObject);
+
+      } else {
         if(strcasecmp(pmTmp->value,"oauth2")==0){
           pmTmp=getMap(pmsTmp->content,"authorizationUrl");
           // TODO: continue integration of oauth2 security scheme
