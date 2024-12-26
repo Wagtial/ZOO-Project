@@ -32,6 +32,9 @@ services:
     environment:
       - ZOO_REDIS_HOST=redis
       - MAPSERVER_CONFIG_FILE=/mapserver/etc/mapserver.conf
+    extra_hosts:
+      - "localhost:zookernel"
+      - "nuxtclient:172.16.238.17"
   zoofpm:
     platform: linux/amd64
     image: zooproject/zoo-project:latest
