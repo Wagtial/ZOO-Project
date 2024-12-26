@@ -439,7 +439,7 @@ RUN set -ex \
     && sed "s#serviceType = C#serviceType = Python#g;s#serviceProvider = security_service.zo#serviceProvider = security_service#g" -i /usr/lib/cgi-bin/securityIn.zcfg \
     # Enable apache modules
     \
-    && a2enmod cgi rewrite headers auth_openidc \
+    && a2enmod cgi rewrite headers auth_openidc proxy proxy_http \
     \
     # Cleanup \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $BUILD_DEPS \
