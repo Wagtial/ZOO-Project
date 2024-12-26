@@ -346,8 +346,8 @@ ARG BUILD_DEPS=" \
 # ENV SERVER_URL=${SERVER_URL:-$SERVER_URL_DEFAULT}
 # ENV WS_SERVER_URL=${WS_SERVER_URL:-$WS_SERVER_URL_DEFAULT}
 
-ARG SERVER_URL="http://34.27.140.206/"
-ARG WS_SERVER_URL="ws://34.27.140.206"
+ARG SERVER_URL=http://34.27.140.206/
+ARG WS_SERVER_URL=ws://34.27.140.206
 
 # For using another port than 80, uncomment below.
 # remember to also change the ports in docker-compose.yml
@@ -374,7 +374,7 @@ COPY --from=builder1 /zoo-project/zoo-project/zoo-services/undeploy-py/cgi-env/ 
 COPY --from=builder1 /zoo-project/docker/.htaccess /var/www/html/.htaccess
 COPY --from=builder1 /zoo-project/docker/default.conf /000-default.conf
 COPY --from=builder1 /zoo-project/zoo-project/zoo-services/utils/open-api/server/publish.py /usr/lib/cgi-bin/publish.py
-# COPY --from=builder1 /zoo-project/docker/security_service.py /usr/lib/cgi-bin/
+COPY --from=builder1 /zoo-project/docker/security_service.py /usr/lib/cgi-bin/
 
 # Node.js global node_modules
 COPY --from=builder1 /usr/lib/node_modules/ /usr/lib/node_modules/
@@ -396,10 +396,11 @@ COPY --from=demos /zoo-project/swagger-ui /var/www/html/swagger-ui
 RUN set -ex \
     && apt-get update && apt-get install -y --no-install-recommends $RUN_DEPS $BUILD_DEPS \
     \
-    && sed "s=https://petstore.swagger.io/v2/swagger.json=${SERVER_URL}ogc-api/api=g" -i /var/www/html/swagger-ui/dist/* \
+    && sed "s=https://petstore.swagger.io/v2/swagger.json=${SERVER_URL}/ogc-api/api=g" -i /var/www/html/swagger-ui/dist/* \
     && sed "s=http://localhost=$SERVER_URL=g" -i /var/www/html/.htaccess \
     && sed "s=http://localhost=$SERVER_URL=g;s=publisherUr\=$SERVER_URL=publisherUrl\=http://localhost=g;s=ws://localhost=$WS_SERVER_URL=g" -i /usr/lib/cgi-bin/oas.cfg \
     && sed "s=http://localhost=$SERVER_URL=g" -i /usr/lib/cgi-bin/main.cfg \
+    && sed "s=http://localhost=$SERVER_URL=g" -i /usr/lib/cgi-bin/oas.cfg \
     && for i in $(find /usr/share/locale/ -name "zoo-kernel.mo"); do \
          j=$(echo $i | sed "s:/usr/share/locale/::g;s:/LC_MESSAGES/zoo-kernel.mo::g"); \
          locale-gen $j ; \
@@ -435,7 +436,7 @@ RUN set -ex \
     && sed "s:AllowedValues =    <Default>:AllowedValues =\n    <Default>:g" -i /usr/lib/cgi-bin/SAGA/*/*zcfg \
     && sed "s:Title = $:Title = No title found:g" -i /usr/lib/cgi-bin/SAGA/*/*.zcfg \
     # Update Security Service \
-    # && sed "s#serviceType = C#serviceType = Python#g;s#serviceProvider = security_service.zo#serviceProvider = security_service#g" -i /usr/lib/cgi-bin/securityIn.zcfg \
+    && sed "s#serviceType = C#serviceType = Python#g;s#serviceProvider = security_service.zo#serviceProvider = security_service#g" -i /usr/lib/cgi-bin/securityIn.zcfg \
     # Enable apache modules
     \
     && a2enmod cgi rewrite headers auth_openidc \
