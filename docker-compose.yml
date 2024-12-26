@@ -120,6 +120,17 @@ services:
         ipv4_address: 172.16.238.16
     volumes:
       - ./docker/definitions.json:/etc/rabbitmq/definitions.json
+  nuxtclient:
+    build:
+      context: .
+      dockerfile: Dockerfile-nuxtclient
+    networks:
+      front-tier:
+        ipv4_address: 172.16.238.17
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./env_nuxt:/usr/src/app/.env
 
 networks:
   front-tier:
