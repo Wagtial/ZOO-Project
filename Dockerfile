@@ -340,8 +340,8 @@ ARG BUILD_DEPS=" \
 
 # For basic usage
 # Define ARG variables with default values
-ARG SERVER_URL_DEFAULT="http://localhost/"
-ARG WS_SERVER_URL_DEFAULT="ws://localhost"
+ARG SERVER_URL_DEFAULT="http://34.27.140.206/"
+ARG WS_SERVER_URL_DEFAULT="ws://34.27.140.206"
 
 # Use ENV to set the environment variables, allowing them to be overridden by existing environment variables
 ENV SERVER_URL=${SERVER_URL:-$SERVER_URL_DEFAULT}
@@ -394,7 +394,7 @@ COPY --from=demos /zoo-project/swagger-ui /var/www/html/swagger-ui
 RUN set -ex \
     && apt-get update && apt-get install -y --no-install-recommends $RUN_DEPS $BUILD_DEPS \
     \
-    && sed "s=https://petstore.swagger.io/v2/swagger.json=${SERVER_URL}/ogc-api/api=g" -i /var/www/html/swagger-ui/dist/* \
+    && sed "s=https://petstore.swagger.io/v2/swagger.json=${SERVER_URL}ogc-api/api=g" -i /var/www/html/swagger-ui/dist/* \
     && sed "s=http://localhost=$SERVER_URL=g" -i /var/www/html/.htaccess \
     && sed "s=http://localhost=$SERVER_URL=g;s=publisherUr\=$SERVER_URL=publisherUrl\=http://localhost=g;s=ws://localhost=$WS_SERVER_URL=g" -i /usr/lib/cgi-bin/oas.cfg \
     && sed "s=http://localhost=$SERVER_URL=g" -i /usr/lib/cgi-bin/main.cfg \
