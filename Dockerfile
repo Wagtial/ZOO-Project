@@ -173,7 +173,6 @@ RUN set -ex \
     #&& msgfmt ../zoo-services/utils/open-api/locale/po/fr_FR.po -o /usr/share/locale/fr_FR/LC_MESSAGES/zoo-services.mo \
     #&& msgfmt ../zoo-services/utils/open-api/locale/po/fr_FR.po -o /usr/local/share/locale/fr_FR/LC_MESSAGES/zoo-services.mo \
     && cp oas.cfg /usr/lib/cgi-bin/ \
-    && cp security_service.py /usr/lib/cgi-bin/ \
     \
     # TODO: main.cfg is not processed \
     && prefix=/usr envsubst < main.cfg > /usr/lib/cgi-bin/main.cfg \
@@ -373,6 +372,7 @@ COPY --from=builder1 /zoo-project/zoo-project/zoo-services/undeploy-py/cgi-env/ 
 COPY --from=builder1 /zoo-project/docker/.htaccess /var/www/html/.htaccess
 COPY --from=builder1 /zoo-project/docker/default.conf /000-default.conf
 COPY --from=builder1 /zoo-project/zoo-project/zoo-services/utils/open-api/server/publish.py /usr/lib/cgi-bin/publish.py
+COPY --from=builder1 /zoo-project/docker/security_service.py /usr/lib/cgi-bin/
 
 # Node.js global node_modules
 COPY --from=builder1 /usr/lib/node_modules/ /usr/lib/node_modules/
