@@ -340,12 +340,14 @@ ARG BUILD_DEPS=" \
 
 # For basic usage
 # Define ARG variables with default values
-ARG SERVER_URL_DEFAULT="http://34.27.140.206/"
-ARG WS_SERVER_URL_DEFAULT="ws://34.27.140.206"
-
+# ARG SERVER_URL_DEFAULT="http://34.27.140.206/"
+# ARG WS_SERVER_URL_DEFAULT="ws://34.27.140.206"
 # Use ENV to set the environment variables, allowing them to be overridden by existing environment variables
-ENV SERVER_URL=${SERVER_URL:-$SERVER_URL_DEFAULT}
-ENV WS_SERVER_URL=${WS_SERVER_URL:-$WS_SERVER_URL_DEFAULT}
+# ENV SERVER_URL=${SERVER_URL:-$SERVER_URL_DEFAULT}
+# ENV WS_SERVER_URL=${WS_SERVER_URL:-$WS_SERVER_URL_DEFAULT}
+
+ARG SERVER_URL="http://34.27.140.206/"
+ARG WS_SERVER_URL="ws://34.27.140.206"
 
 # For using another port than 80, uncomment below.
 # remember to also change the ports in docker-compose.yml
@@ -372,7 +374,7 @@ COPY --from=builder1 /zoo-project/zoo-project/zoo-services/undeploy-py/cgi-env/ 
 COPY --from=builder1 /zoo-project/docker/.htaccess /var/www/html/.htaccess
 COPY --from=builder1 /zoo-project/docker/default.conf /000-default.conf
 COPY --from=builder1 /zoo-project/zoo-project/zoo-services/utils/open-api/server/publish.py /usr/lib/cgi-bin/publish.py
-COPY --from=builder1 /zoo-project/docker/security_service.py /usr/lib/cgi-bin/
+# COPY --from=builder1 /zoo-project/docker/security_service.py /usr/lib/cgi-bin/
 
 # Node.js global node_modules
 COPY --from=builder1 /usr/lib/node_modules/ /usr/lib/node_modules/
@@ -433,7 +435,7 @@ RUN set -ex \
     && sed "s:AllowedValues =    <Default>:AllowedValues =\n    <Default>:g" -i /usr/lib/cgi-bin/SAGA/*/*zcfg \
     && sed "s:Title = $:Title = No title found:g" -i /usr/lib/cgi-bin/SAGA/*/*.zcfg \
     # Update Security Service \
-    && sed "s#serviceType = C#serviceType = Python#g;s#serviceProvider = security_service.zo#serviceProvider = security_service#g" -i /usr/lib/cgi-bin/securityIn.zcfg \
+    # && sed "s#serviceType = C#serviceType = Python#g;s#serviceProvider = security_service.zo#serviceProvider = security_service#g" -i /usr/lib/cgi-bin/securityIn.zcfg \
     # Enable apache modules
     \
     && a2enmod cgi rewrite headers auth_openidc \
