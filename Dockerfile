@@ -347,8 +347,8 @@ ARG BUILD_DEPS=" \
 # ENV SERVER_URL=${SERVER_URL:-$SERVER_URL_DEFAULT}
 # ENV WS_SERVER_URL=${WS_SERVER_URL:-$WS_SERVER_URL_DEFAULT}
 
-ARG SERVER_URL=http://34.27.140.206/
-ARG WS_SERVER_URL=ws://34.27.140.206
+ARG SERVER_URL=http://localhost
+ARG WS_SERVER_URL=ws://localhost
 
 # For using another port than 80, uncomment below.
 # remember to also change the ports in docker-compose.yml
@@ -444,7 +444,7 @@ RUN set -ex \
     && sed "s#serviceType = C#serviceType = Python#g;s#serviceProvider = security_service.zo#serviceProvider = security_service#g" -i /usr/lib/cgi-bin/securityIn.zcfg \
     # Enable apache modules
     \
-    && a2enmod cgi rewrite headers auth_openidc proxy proxy_http proxy_html xml2enc \
+    && a2enmod cgi rewrite headers auth_openidc proxy proxy_http \
     \
     # Cleanup \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $BUILD_DEPS \
