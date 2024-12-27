@@ -9,6 +9,7 @@ services:
         ipv4_address: 172.16.238.10
     ports:
       - "80:80"
+      - "8000:8000"
     volumes:
       - ./docker/main.cfg:/usr/lib/cgi-bin/main.cfg
       - ./docker/oas.cfg:/usr/lib/cgi-bin/oas.cfg
