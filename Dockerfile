@@ -373,6 +373,7 @@ COPY --from=builder1 /zoo-project/zoo-project/zoo-services/deploy-py/cgi-env/ /u
 COPY --from=builder1 /zoo-project/zoo-project/zoo-services/undeploy-py/cgi-env/ /usr/lib/cgi-bin/
 COPY --from=builder1 /zoo-project/docker/.htaccess /var/www/html/.htaccess
 COPY --from=builder1 /zoo-project/docker/default.conf /000-default.conf
+COPY --from=builder1 /zoo-project/docker/nuxtclient.conf /000-nuxtclient.conf
 COPY --from=builder1 /zoo-project/zoo-project/zoo-services/utils/open-api/server/publish.py /usr/lib/cgi-bin/publish.py
 COPY --from=builder1 /zoo-project/docker/security_service.py /usr/lib/cgi-bin/
 
@@ -413,6 +414,8 @@ RUN set -ex \
     && ln -s /testing /var/www/html/cptesting \
     && rm -rf /var/lib/apt/lists/* \
     && cp /000-default.conf /etc/apache2/sites-available/ \
+    && cp /000-nuxtclient.conf /etc/apache2/sites-available/ \
+    && a2ensite 000-default 000-nuxtclient \
     && export CPLUS_INCLUDE_PATH=/usr/include/gdal \
     && export C_INCLUDE_PATH=/usr/include/gdal \
     && pip3 install --upgrade pip setuptools wheel \
