@@ -457,4 +457,5 @@ RUN mkdir -p /opt/zooservices_namespaces && chmod -R 700 /opt/zooservices_namesp
 # For using another port than 80, change the value below.
 # remember to also change the ports in docker-compose.yml
 EXPOSE 80
+EXPOSE 8000
 CMD /usr/sbin/apache2ctl -D FOREGROUND
