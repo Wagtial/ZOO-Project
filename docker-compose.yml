@@ -132,8 +132,8 @@ services:
         ipv4_address: 172.16.238.17
     ports:
       - "3000:3000"
-    volumes:
-      - ./env_nuxt:/usr/src/app/.env
+    env_file:
+      - ./env_nuxt
 
 networks:
   front-tier:
