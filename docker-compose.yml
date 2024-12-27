@@ -14,6 +14,7 @@ services:
       - ./docker/main.cfg:/usr/lib/cgi-bin/main.cfg
       - ./docker/oas.cfg:/usr/lib/cgi-bin/oas.cfg
       - ./docker/default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./docker/nuxtclient.conf:/etc/apache2/sites-available/000-nuxtclient.conf
       # Uncomment below to expose a process named org.n52.javaps.test.EchoProcess
       - ./zoo-project/zoo-services/echo-py/cgi-env:/usr/lib/cgi-bin/org/n52/javaps/test
       - ./zoo-project/zoo-services/echo-py/cgi-env/echo_service.py:/usr/lib/cgi-bin/echo_service.py
