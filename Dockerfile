@@ -417,6 +417,7 @@ RUN set -ex \
     && cp /000-default.conf /etc/apache2/sites-available/ \
     && cp /000-nuxtclient.conf /etc/apache2/sites-available/ \
     && a2ensite 000-default 000-nuxtclient \
+    && echo "Listen 8000" >> /etc/apache2/ports.conf \
     && export CPLUS_INCLUDE_PATH=/usr/include/gdal \
     && export C_INCLUDE_PATH=/usr/include/gdal \
     && pip3 install --upgrade pip setuptools wheel \
