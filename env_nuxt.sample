@@ -6,7 +6,8 @@ NUXT_OIDC_CLIENT_SECRET = eyjxKvSerkxhQILAm84yOPpl3UXhEb5l
 NUXT_ZOO_BASEURL = http://34.27.140.206
 NUXT_BASE_URL = http://localhost:3000
 AUTH_ORIGIN = http://localhost:3000
-NEXTAUTH_SECRET = mysecret
+NUXT_AUTH_SECRET = mysecret
+
 # NODE_ENV = production
 # Uncomment NODE_ENV for production
 NEXTAUTH_URL = http://localhost:3000
