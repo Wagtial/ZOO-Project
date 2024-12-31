@@ -1,0 +1,432 @@
+components:
+  parameters:
+    processID:
+      x-internal-summary: The id of a process
+      description: The id of a process
+      example: buffer
+      required: true
+      in: path
+      name: processID
+      schema:
+        type: string
+    jobID:
+      x-internal-summary: The id of a job
+      description: The id of a job
+      required: true
+      in: path
+      name: jobID
+      schema:
+        type: string
+    resultID:
+      x-internal-summary: The id of an output
+      description: The id of an output
+      required: true
+      in: path
+      name: resultID
+      schema:
+        type: string
+    oas-header1:
+      required: true
+      in: header
+      name: Prefer
+      schema:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+          - respond-async;return=representation
+    oas-header2:
+      required: false
+      in: header
+      name: Prefer
+      schema:
+        type: string
+        enum:
+          - return=representation
+          - return=minimal
+    limitParam:
+      x-internal-summary: The limit parameter
+      description: The limit parameter indicates the number of elements to return in an array
+      required: false
+      in: query
+      name: limit
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 10000
+        default: 1000
+    skipParam:
+      x-internal-summary: The skip parameter
+      description: The skip parameter indicates the number of elements to skip before starting returning values in an array
+      required: false
+      in: query
+      name: skip
+      schema:
+        type: integer
+        minimum: 0
+    processIdParam:
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/processIdQueryParam.yaml
+    statusParam:
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/status.yaml
+    minDurationParam:
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/minDuration.yaml
+    maxDurationParam:
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/maxDuration.yaml
+    typeParam:
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/type.yaml
+    datetimeParam:
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/datetime.yaml
+  responses:
+    '400':
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/InvalidParameter.yaml
+    '404':
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/NotFound.yaml
+    '405':
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/NotAllowed.yaml
+    '406':
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/NotSupported.yaml
+    '500':
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ServerError.yaml
+  schemas:
+    landingPage:
+      $ref: https://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/schemas/landingPage.yaml
+    confClasses:
+      $ref: https://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/schemas/confClasses.yaml
+  securitySchemes:
+    OIDC:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://build-keycloak-162127822228.us-central1.run.app/realms/zooproject/protocol/openid-connect/token
+          scopes:
+            openid: OpenID Connect scope
+            email: Access to your email
+            profile: Access to your profile
+info:
+  contact:
+    name: ZOO-Project
+    email: gerald.fenoy@geolabs.fr
+    url: http://www.zoo-project.org
+  description: Developement version of ZOO-Project OGC WPS. See http://www.zoo-project.org
+  title: The ZOO-Project OGC WPS Developement Server
+  version: 2.0.0
+  x-keywords:
+    - WPS
+    - GIS
+    - buffer
+  x-ows-servicecontact:
+    providerName: ZOO-Project
+    providerSite: http://www.zoo-project.org
+    individualName: Gerald FENOY
+    positionName: Developer
+    role: Dev
+    addressDeliveryPoint: 1280, avenue des Platanes
+    addressCity: Lattes
+    addressAdministrativeArea: 'False'
+    addressPostalCode: '34970'
+    addressCountry: fr
+    addressElectronicMailAddress: gerald.fenoy@geolabs.fr
+    phoneVoice: 'False'
+    phoneFacsimile: 'False'
+  license:
+    name: OGC license
+    url: https://raw.githubusercontent.com/opengeospatial/ogcapi-processes/master/LICENSE
+openapi: 3.0.3
+tags:
+  - name: Home
+    description: Home
+  - name: API
+    description: API
+  - name: Conformance
+    description: Conformance
+  - name: GetCapabilities
+    description: GetCapabilities
+  - name: ProcessDescription
+    description: ProcessDescription
+  - name: ExecuteEndpoint
+    description: ExecuteEndpoint
+  - name: JobList
+    description: JobList
+  - name: GetStatus
+    description: GetStatus
+  - name: GetResult
+    description: GetResult
+  - name: Dismiss
+    description: Dismiss
+paths:
+  /:
+    get:
+      summary: landing page of this API
+      description: The landing page provides links to the API definition, the Conformance statements and the metadata about the processes offered by this service.
+      tags:
+        - Home
+      operationId: get_root
+      responses:
+        '200':
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/LandingPage.yaml
+  /api:
+    get:
+      summary: This document
+      description: This document
+      tags:
+        - API
+      operationId: get_api
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi+json;version=3.0: {}
+          description: successful operation
+  /conformance:
+    get:
+      summary: information about standards that this API conforms to
+      description: list all requirements classes specified in a standard (e.g., WPS REST/JSON Binding Core) that the server conforms to
+      tags:
+        - Conformance
+      operationId: get_conformance
+      responses:
+        '200':
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ConformanceDeclaration.yaml
+  /processes:
+    get:
+      summary: retrieve available processes
+      description: Information about the available processes
+      tags:
+        - GetCapabilities
+      operationId: get_processes
+      responses:
+        '200':
+          $ref: https://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ProcessList.yaml
+      parameters:
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/skipParam'
+  /processes/{processID}:
+    get:
+      summary: retrieve a process description
+      description: A process description.
+      tags:
+        - ProcessDescription
+      operationId: get_processes__processID_
+      responses:
+        '200':
+          $ref: https://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/swagger/ProcessDescription.yaml
+        '404':
+          $ref: '#/components/responses/404'
+      parameters:
+        - $ref: '#/components/parameters/processID'
+  /processes/SAGA.shapes_points.12/execution:
+    post:
+      summary: execute a job
+      description: An execute endpoint.
+      tags:
+        - ExecuteEndpoint
+      operationId: ExecuteEndpointSAGA.shapes_points.12
+      responses:
+        '200':
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteSync.yaml
+        '201':
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteAsync.yaml
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+        - $ref: '#/components/parameters/oas-header1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: https://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/schemas/execute.yaml
+            examples:
+              '0':
+                summary: 'Example 0: output as json by value'
+                value:
+                  inputs:
+                    SHAPES:
+                      href: http://zoo-project.org:8080/geoserver/wfs?service=WFS&version=1.0.0&request=GetFeature&srsName=EPSG:4326&typename=sf:bugsites
+                  outputs:
+                    HULLS:
+                      format:
+                        mediaType: application/json
+                      transmissionMode: value
+                    BOXES:
+                      format:
+                        mediaType: application/json
+                      transmissionMode: value
+                  response: document
+              '1':
+                summary: 'Example 1: output as xml by value'
+                value:
+                  inputs:
+                    SHAPES:
+                      href: http://zoo-project.org:8080/geoserver/wfs?service=WFS&version=1.0.0&request=GetFeature&srsName=EPSG:4326&typename=sf:bugsites
+                  outputs:
+                    HULLS:
+                      format:
+                        mediaType: text/xml
+                      transmissionMode: value
+                    BOXES:
+                      format:
+                        mediaType: text/xml
+                      transmissionMode: value
+                  response: document
+        description: Mandatory execute request in JSON format
+        required: true
+  /processes/OTB.BandMath/execution:
+    post:
+      summary: execute a job
+      description: An execute endpoint.
+      tags:
+        - ExecuteEndpoint
+      operationId: ExecuteEndpointOTB.BandMath
+      responses:
+        '200':
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteSync.yaml
+        '201':
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteAsync.yaml
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+        - $ref: '#/components/parameters/oas-header1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: https://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/schemas/execute.yaml
+            examples:
+              '0':
+                summary: 'Example 0: output as reference / image/tiff / document'
+                value:
+                  inputs:
+                    il:
+                      - href: http://geolabs.fr/dl/Landsat8Extract1.tif
+                    out: float
+                    exp: im1b1+im1b2
+                    ram: 256
+                  outputs:
+                    out:
+                      format:
+                        mediaType: image/tiff
+                      transmissionMode: reference
+                  response: document
+              '1':
+                summary: 'Example 1: output as reference / image/jpeg / raw'
+                value:
+                  inputs:
+                    il:
+                      - href: http://geolabs.fr/dl/Landsat8Extract1.tif
+                    out: float
+                    exp: im1b3,im1b2,im1b1
+                    ram: 256
+                  outputs:
+                    out:
+                      format:
+                        mediaType: image/jpeg
+                      transmissionMode: reference
+                  response: raw
+        description: Mandatory execute request in JSON format
+        required: true
+  /processes/{processID}/execution:
+    post:
+      summary: execute a job
+      description: An execute endpoint.
+      tags:
+        - ExecuteEndpoint
+      operationId: post_processes__processID__execution
+      responses:
+        '200':
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteSync.yaml
+        '201':
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteAsync.yaml
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+        - $ref: '#/components/parameters/processID'
+        - $ref: '#/components/parameters/oas-header1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: https://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/schemas/execute.yaml
+        description: Mandatory execute request in JSON format
+        required: true
+  /jobs:
+    get:
+      summary: retrieve a list of jobs run
+      description: A list of jobs run.
+      tags:
+        - JobList
+      operationId: get_jobs
+      security:
+        - OIDC: []
+      responses:
+        '200':
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/JobList.yaml
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/skipParam'
+        - $ref: '#/components/parameters/processIdParam'
+        - $ref: '#/components/parameters/statusParam'
+        - $ref: '#/components/parameters/minDurationParam'
+        - $ref: '#/components/parameters/maxDurationParam'
+        - $ref: '#/components/parameters/typeParam'
+        - $ref: '#/components/parameters/datetimeParam'
+  /jobs/{jobID}:
+    get:
+      summary: The status of a job.
+      description: The status of a job.
+      tags:
+        - GetStatus
+      operationId: get_jobs__jobID_
+      responses:
+        '200':
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/Status.yaml
+      parameters:
+        - $ref: '#/components/parameters/jobID'
+    delete:
+      summary: Cancel a job
+      description: Cancel the job execution.
+      tags:
+        - Dismiss
+      operationId: delete_jobs__jobID_
+      responses:
+        '200':
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/Status.yaml
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+        - $ref: '#/components/parameters/jobID'
+  /jobs/{jobID}/results:
+    get:
+      summary: The result of a job execution.
+      description: The result of a job execution.
+      tags:
+        - GetResult
+      operationId: get_jobs__jobID__results
+      responses:
+        '200':
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/Results.yaml
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      parameters:
+        - $ref: '#/components/parameters/jobID'
+servers:
+  - description: The ZOO-Project OGC WPS Developement Server
+    url: http://34.58.209.120/ogc-api

@@ -1,6 +1,7 @@
 #
 # Base: Ubuntu 18.04 with updates and external packages
 #
+
 FROM ubuntu:bionic-20230308 AS base
 ARG DEBIAN_FRONTEND=noninteractive
 ARG BUILD_DEPS=" \
@@ -316,9 +317,10 @@ ARG RUN_DEPS=" \
     gnuplot \
     locales \
     libapache2-mod-fcgid \
+    libapache2-mod-auth-openidc \
     python3-setuptools \
     #Uncomment the line below to add vi editor \
-    #vim \
+    vim \
     #Uncomment the lines below to add debuging \
     #valgrind \
     #gdb \
@@ -336,9 +338,17 @@ ARG BUILD_DEPS=" \
 # For Azure use, uncomment bellow
 #ARG SERVER_URL="http://zooprojectdemo.azurewebsites.net/"
 #ARG WS_SERVER_URL="ws://zooprojectdemo.azurewebsites.net"
+
 # For basic usage
-ARG SERVER_URL="http://localhost/"
-ARG WS_SERVER_URL="ws://localhost"
+# Define ARG variables with default values
+# ARG SERVER_URL_DEFAULT="http://34.27.140.206/"
+# ARG WS_SERVER_URL_DEFAULT="ws://34.27.140.206"
+# Use ENV to set the environment variables, allowing them to be overridden by existing environment variables
+# ENV SERVER_URL=${SERVER_URL:-$SERVER_URL_DEFAULT}
+# ENV WS_SERVER_URL=${WS_SERVER_URL:-$WS_SERVER_URL_DEFAULT}
+
+ARG SERVER_URL=http://localhost
+ARG WS_SERVER_URL=ws://localhost
 
 # For using another port than 80, uncomment below.
 # remember to also change the ports in docker-compose.yml
@@ -364,7 +374,9 @@ COPY --from=builder1 /zoo-project/zoo-project/zoo-services/deploy-py/cgi-env/ /u
 COPY --from=builder1 /zoo-project/zoo-project/zoo-services/undeploy-py/cgi-env/ /usr/lib/cgi-bin/
 COPY --from=builder1 /zoo-project/docker/.htaccess /var/www/html/.htaccess
 COPY --from=builder1 /zoo-project/docker/default.conf /000-default.conf
+COPY --from=builder1 /zoo-project/docker/nuxtclient.conf /000-nuxtclient.conf
 COPY --from=builder1 /zoo-project/zoo-project/zoo-services/utils/open-api/server/publish.py /usr/lib/cgi-bin/publish.py
+COPY --from=builder1 /zoo-project/docker/security_service.py /usr/lib/cgi-bin/
 
 # Node.js global node_modules
 COPY --from=builder1 /usr/lib/node_modules/ /usr/lib/node_modules/
@@ -390,6 +402,7 @@ RUN set -ex \
     && sed "s=http://localhost=$SERVER_URL=g" -i /var/www/html/.htaccess \
     && sed "s=http://localhost=$SERVER_URL=g;s=publisherUr\=$SERVER_URL=publisherUrl\=http://localhost=g;s=ws://localhost=$WS_SERVER_URL=g" -i /usr/lib/cgi-bin/oas.cfg \
     && sed "s=http://localhost=$SERVER_URL=g" -i /usr/lib/cgi-bin/main.cfg \
+    && sed "s=http://localhost=$SERVER_URL=g" -i /usr/lib/cgi-bin/oas.cfg \
     && for i in $(find /usr/share/locale/ -name "zoo-kernel.mo"); do \
          j=$(echo $i | sed "s:/usr/share/locale/::g;s:/LC_MESSAGES/zoo-kernel.mo::g"); \
          locale-gen $j ; \
@@ -402,6 +415,9 @@ RUN set -ex \
     && ln -s /testing /var/www/html/cptesting \
     && rm -rf /var/lib/apt/lists/* \
     && cp /000-default.conf /etc/apache2/sites-available/ \
+    && cp /000-nuxtclient.conf /etc/apache2/sites-available/ \
+    && a2ensite 000-default 000-nuxtclient \
+    && echo "Listen 8000" >> /etc/apache2/ports.conf \
     && export CPLUS_INCLUDE_PATH=/usr/include/gdal \
     && export C_INCLUDE_PATH=/usr/include/gdal \
     && pip3 install --upgrade pip setuptools wheel \
@@ -424,9 +440,11 @@ RUN set -ex \
     # Update SAGA zcfg
     && sed "s:AllowedValues =    <Default>:AllowedValues =\n    <Default>:g" -i /usr/lib/cgi-bin/SAGA/*/*zcfg \
     && sed "s:Title = $:Title = No title found:g" -i /usr/lib/cgi-bin/SAGA/*/*.zcfg \
+    # Update Security Service \
+    && sed "s#serviceType = C#serviceType = Python#g;s#serviceProvider = security_service.zo#serviceProvider = security_service#g" -i /usr/lib/cgi-bin/securityIn.zcfg \
     # Enable apache modules
     \
-    && a2enmod cgi rewrite \
+    && a2enmod cgi rewrite headers auth_openidc proxy proxy_http \
     \
     # Cleanup \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $BUILD_DEPS \
@@ -440,4 +458,5 @@ RUN mkdir -p /opt/zooservices_namespaces && chmod -R 700 /opt/zooservices_namesp
 # For using another port than 80, change the value below.
 # remember to also change the ports in docker-compose.yml
 EXPOSE 80
+EXPOSE 8000
 CMD /usr/sbin/apache2ctl -D FOREGROUND

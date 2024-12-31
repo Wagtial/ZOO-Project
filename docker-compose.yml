@@ -9,10 +9,12 @@ services:
         ipv4_address: 172.16.238.10
     ports:
       - "80:80"
+      - "8000:8000"
     volumes:
       - ./docker/main.cfg:/usr/lib/cgi-bin/main.cfg
       - ./docker/oas.cfg:/usr/lib/cgi-bin/oas.cfg
       - ./docker/default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./docker/nuxtclient.conf:/etc/apache2/sites-available/000-nuxtclient.conf
       # Uncomment below to expose a process named org.n52.javaps.test.EchoProcess
       - ./zoo-project/zoo-services/echo-py/cgi-env:/usr/lib/cgi-bin/org/n52/javaps/test
       - ./zoo-project/zoo-services/echo-py/cgi-env/echo_service.py:/usr/lib/cgi-bin/echo_service.py
@@ -32,6 +34,9 @@ services:
     environment:
       - ZOO_REDIS_HOST=redis
       - MAPSERVER_CONFIG_FILE=/mapserver/etc/mapserver.conf
+    extra_hosts:
+      - "localhost:172.16.238.10"
+      - "nuxtclient:172.16.238.10"
   zoofpm:
     platform: linux/amd64
     image: zooproject/zoo-project:latest
@@ -120,6 +125,17 @@ services:
         ipv4_address: 172.16.238.16
     volumes:
       - ./docker/definitions.json:/etc/rabbitmq/definitions.json
+  nuxtclient:
+    build:
+      context: .
+      dockerfile: Dockerfile-nuxtclient
+    networks:
+      front-tier:
+        ipv4_address: 172.16.238.17
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./env_nuxt
 
 networks:
   front-tier:

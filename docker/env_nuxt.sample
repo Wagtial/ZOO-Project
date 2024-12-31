@@ -1,0 +1,13 @@
+# Copy this file to env_nuxt and fill in the values for your environment
+
+NUXT_OIDC_ISSUER = https://build-keycloak-162127822228.us-central1.run.app/realms/zooproject
+NUXT_OIDC_CLIENT_ID = nuxt-zooproject
+NUXT_OIDC_CLIENT_SECRET = eyjxKvSerkxhQILAm84yOPpl3UXhEb5l
+NUXT_ZOO_BASEURL = http://34.27.140.206
+NUXT_BASE_URL = http://localhost:3000
+AUTH_ORIGIN = http://localhost:3000
+NUXT_AUTH_SECRET = mysecret
+
+# NODE_ENV = production
+# Uncomment NODE_ENV for production
+NEXTAUTH_URL = http://localhost:3000
