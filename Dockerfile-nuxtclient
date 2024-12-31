@@ -17,7 +17,7 @@ COPY package*.json ./
 COPY . .
 
 # Copia el archivo env_nuxt
-COPY env_nuxt .env
+COPY docker/env_nuxt.sample .env
 
 # Instala las dependencias
 RUN npm install --omit=dev
