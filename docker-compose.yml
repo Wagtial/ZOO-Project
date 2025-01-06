@@ -142,7 +142,8 @@ services:
     image: quay.io/keycloak/keycloak:26.0.7
     command:
       - start-dev
-      - --features admin-fine-grained-authz token-exchange
+      - --features=admin-fine-grained-authz
+      - --features=token-exchange
       - --http-enabled=true
       - --verbose
     environment:
