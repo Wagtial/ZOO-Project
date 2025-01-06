@@ -125,6 +125,7 @@ services:
         ipv4_address: 172.16.238.16
     volumes:
       - ./docker/definitions.json:/etc/rabbitmq/definitions.json
+
   nuxtclient:
     build:
       context: .
@@ -136,6 +137,22 @@ services:
       - "3000:3000"
     env_file:
       - ./env_nuxt
+
+  keycloack:
+    image: quay.io/keycloak/keycloak:26.0.7
+    command:
+      - start-dev
+      - --features admin-fine-grained-authz token-exchange
+      - --http-enabled=true
+      - --verbose
+    environment:
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_ADMIN: admin
+    networks:
+      front-tier:
+        ipv4_address: 172.16.238.18
+    ports:
+      - "8099:8080"
 
 networks:
   front-tier:
