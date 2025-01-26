@@ -102,12 +102,13 @@ ARG BUILD_DEPS=" \
     libnode-dev \
     node-addon-api \
     nodejs \
-    libaprutil1-dev\
+    libaprutil1-dev \
 "
 WORKDIR /zoo-project
 COPY . .
 
 RUN set -ex \
+    && apt-get install -y libc6 \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get update && apt-get install -y --no-install-recommends $BUILD_DEPS \
     \
