@@ -33,19 +33,27 @@ ARG RUN_DEPS=" \
     libnode109 \
 "
 RUN set -ex \
-    && apt-get update && apt-get install -y --no-install-recommends $BUILD_DEPS  \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends $BUILD_DEPS software-properties-common gnupg wget curl \
     \
-    #&& add-apt-repository ppa:osgeolive/nightly \
-    #&& add-apt-repository ppa:ubuntugis/ubuntugis-unstable \
+    # Añadir el repositorio de UbuntuGIS
     && add-apt-repository ppa:ubuntugis/ppa \
+    \
+    # Crear directorio para claves modernas y deshabilitar IPv6 en GPG
     && mkdir -p /etc/apt/keyrings \
-    && mkdir ~/.gnupg \
+    && mkdir -p ~/.gnupg \
     && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf \
-    && echo "OK " \
-    # && curl -fsSL https://cloud.r-project.org/bin/linux/ubuntu/noble-cran40.asc | gpg --dearmor -o /etc/apt/keyrings/cran-archive-keyring.gpg \
-    && wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc \
-    # && echo "deb [signed-by=/etc/apt/keyrings/cran-archive-keyring.gpg] https://cloud.r-project.org/bin/linux/ubuntu noble-cran40/" | tee /etc/apt/sources.list.d/cran.list \
-    && sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/" \
+    \
+    # Añadir clave pública de CRAN
+    && curl -fsSL https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc \
+       | gpg --dearmor -o /etc/apt/keyrings/cran-archive-keyring.gpg \
+    \
+    # Añadir el repositorio de CRAN
+    && echo "deb [signed-by=/etc/apt/keyrings/cran-archive-keyring.gpg] https://cloud.r-project.org/bin/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME")-cran40/" \
+       | tee /etc/apt/sources.list.d/cran.list \
+    \
+    # Actualizar repositorios
+    && apt-get update \
     && add-apt-repository ppa:mmomtchev/libnode \
     \
     && apt-get install -y $RUN_DEPS \
