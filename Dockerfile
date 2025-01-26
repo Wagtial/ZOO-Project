@@ -97,7 +97,7 @@ ARG BUILD_DEPS=" \
     git \
     libfcgi-dev \
     libgdal-dev \
-    libwxgtk3.0-dev \
+    libwxgtk3.0-gtk3-dev \
     libjson-c-dev \
     libssh2-1-dev \
     libssl-dev \
