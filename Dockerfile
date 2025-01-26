@@ -38,11 +38,12 @@ RUN set -ex \
     #&& add-apt-repository ppa:osgeolive/nightly \
     #&& add-apt-repository ppa:ubuntugis/ubuntugis-unstable \
     && add-apt-repository ppa:ubuntugis/ppa \
+    && mkdir -p /etc/apt/keyrings \
     && mkdir ~/.gnupg \
     && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf \
     && echo "OK " \
-    && apt-key adv --homedir ~/.gnupg --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
-    && add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/' \
+    && curl -fsSL https://cloud.r-project.org/bin/linux/ubuntu/mariner-cran40.asc | gpg --dearmor -o /etc/apt/keyrings/cran-archive-keyring.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/cran-archive-keyring.gpg] https://cloud.r-project.org/bin/linux/ubuntu minotaur-cran40/" | tee /etc/apt/sources.list.d/cran.list \
     && add-apt-repository ppa:mmomtchev/libnode \
     \
     && apt-get install -y $RUN_DEPS \
