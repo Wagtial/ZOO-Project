@@ -26,11 +26,11 @@ ARG RUN_DEPS=" \
     gdal-bin \
     libcgal-dev \
     librabbitmq4 \
-    nlohmann-json-dev \
+    nlohmann-json3-dev \
     python3 \
     r-base \
     python3-pip\
-    libnode109 \
+    libnode93 \
 "
 RUN set -ex \
     && apt-get update \
@@ -109,7 +109,7 @@ ARG BUILD_DEPS=" \
     r-base-dev \
     librabbitmq-dev \
     libkrb5-dev \
-    nlohmann-json-dev \
+    nlohmann-json3-dev \
     libnode-dev \
     node-addon-api \
     nodejs \
