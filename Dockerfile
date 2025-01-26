@@ -42,8 +42,10 @@ RUN set -ex \
     && mkdir ~/.gnupg \
     && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf \
     && echo "OK " \
-    && curl -fsSL https://cloud.r-project.org/bin/linux/ubuntu/mariner-cran40.asc | gpg --dearmor -o /etc/apt/keyrings/cran-archive-keyring.gpg \
-    && echo "deb [signed-by=/etc/apt/keyrings/cran-archive-keyring.gpg] https://cloud.r-project.org/bin/linux/ubuntu minotaur-cran40/" | tee /etc/apt/sources.list.d/cran.list \
+    # && curl -fsSL https://cloud.r-project.org/bin/linux/ubuntu/noble-cran40.asc | gpg --dearmor -o /etc/apt/keyrings/cran-archive-keyring.gpg \
+    && wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc \
+    # && echo "deb [signed-by=/etc/apt/keyrings/cran-archive-keyring.gpg] https://cloud.r-project.org/bin/linux/ubuntu noble-cran40/" | tee /etc/apt/sources.list.d/cran.list \
+    && sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/" \
     && add-apt-repository ppa:mmomtchev/libnode \
     \
     && apt-get install -y $RUN_DEPS \
