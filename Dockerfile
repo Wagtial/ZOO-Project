@@ -60,11 +60,11 @@ RUN set -ex \
     && apt-get install -y $RUN_DEPS \
     \
     && curl -LO http://archive.ubuntu.com/ubuntu/pool/main/libf/libffi/libffi6_3.2.1-8_amd64.deb \
-    && sudo dpkg -i libffi6_3.2.1-8_amd64.deb \
+    && dpkg -i libffi6_3.2.1-8_amd64.deb \
     && wget http://launchpadlibrarian.net/309343863/libmozjs185-1.0_1.8.5-1.0.0+dfsg-7_amd64.deb \
     && wget http://launchpadlibrarian.net/309343864/libmozjs185-dev_1.8.5-1.0.0+dfsg-7_amd64.deb \
-    && sudo dpkg --force-depends -i libmozjs185-1.0_1.8.5-1.0.0+dfsg-7_amd64.deb \
-    && sudo dpkg --force-depends -i libmozjs185-dev_1.8.5-1.0.0+dfsg-7_amd64.deb \
+    && dpkg --force-depends -i libmozjs185-1.0_1.8.5-1.0.0+dfsg-7_amd64.deb \
+    && dpkg --force-depends -i libmozjs185-dev_1.8.5-1.0.0+dfsg-7_amd64.deb \
     && apt -y --fix-broken install \
     && rm libmozjs185*.deb libffi6*.deb \
     \
@@ -145,7 +145,7 @@ RUN set -ex \
     && ./configure --with-rabbitmq=yes --with-python=/usr --with-pyvers=3.10 \
               --with-nodejs=/usr --with-mapserver=/usr --with-ms-version=7  \
               --with-json=/usr --with-r=/usr --with-db-backend --prefix=/usr \
-              --with-otb=/usr --with-itk=/usr --with-otb-version=8.1 \
+              --with-itk=/usr \
               --with-itk-version=4.12 --with-saga=/usr \
               --with-saga-version=7.2 --with-wx-config=/usr/bin/wx-config \
     && make -j4 \
