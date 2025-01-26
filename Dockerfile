@@ -30,7 +30,7 @@ ARG RUN_DEPS=" \
     python3 \
     r-base \
     python3-pip\
-    libnode93 \
+    libnode109 \
 "
 RUN set -ex \
     && apt-get update && apt-get install -y --no-install-recommends $BUILD_DEPS  \
@@ -441,10 +441,8 @@ RUN set -ex \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $BUILD_DEPS \
     # && rm -rf /var/lib/apt/lists/*
 
-
 # service namespaces parent folder
 RUN mkdir -p /opt/zooservices_namespaces && chmod -R 700 /opt/zooservices_namespaces && chown -R www-data /opt/zooservices_namespaces
-
 
 # For using another port than 80, change the value below.
 # remember to also change the ports in docker-compose.yml
