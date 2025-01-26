@@ -108,7 +108,7 @@ WORKDIR /zoo-project
 COPY . .
 
 RUN set -ex \
-    && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get update && apt-get install -y --no-install-recommends $BUILD_DEPS \
     \
     && make -C ./thirds/cgic206 libcgic.a \
@@ -393,7 +393,8 @@ RUN set -ex \
     && apt-get update && apt-get install -y --no-install-recommends $RUN_DEPS $BUILD_DEPS \
     \
     && sed "s=https://petstore.swagger.io/v2/swagger.json=${SERVER_URL}/ogc-api/api=g" -i /var/www/html/swagger-ui/dist/* \
-    && sed "s=http://localhost=$SERVER_URL=g" -i /var/www/html/.htaccess \
+    # se eliminó la configuración de apache2 \
+    # && sed "s=http://localhost=$SERVER_URL=g" -i /var/www/html/.htaccess \
     && sed "s=http://localhost=$SERVER_URL=g;s=publisherUr\=$SERVER_URL=publisherUrl\=http://localhost=g;s=ws://localhost=$WS_SERVER_URL=g" -i /usr/lib/cgi-bin/oas.cfg \
     && sed "s=http://localhost=$SERVER_URL=g" -i /usr/lib/cgi-bin/main.cfg \
     && for i in $(find /usr/share/locale/ -name "zoo-kernel.mo"); do \
