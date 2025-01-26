@@ -33,6 +33,7 @@ ARG RUN_DEPS=" \
     libnode109 \
 "
 RUN set -ex \
+    && add-apt-repository universe \
     && apt-get update \
     && apt-get install -y --no-install-recommends $BUILD_DEPS software-properties-common gnupg wget curl \
     \
