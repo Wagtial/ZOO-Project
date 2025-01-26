@@ -120,6 +120,7 @@ ARG BUILD_DEPS=" \
     libaprutil1-dev \
     libfcgi-dev \
     libxslt-dev \
+    libopengl-dev \
 "
 WORKDIR /zoo-project
 COPY . .
