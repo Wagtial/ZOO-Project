@@ -307,7 +307,10 @@ RUN set -ex \
 FROM base AS runtime
 ARG DEBIAN_FRONTEND=noninteractive
 ARG RUN_DEPS=" \
-    apache2 \
+    # se eliminó apache2 \
+    # apache2 \
+    # se agregó nginx \
+    nginx \
     curl \
     cgi-mapserver \
     mapserver-bin \
@@ -315,10 +318,11 @@ ARG RUN_DEPS=" \
     libxml2-utils \
     gnuplot \
     locales \
-    libapache2-mod-fcgid \
+    # se eliminó libapache2-mod-fcgid \
+    # libapache2-mod-fcgid \
     python3-setuptools \
     #Uncomment the line below to add vi editor \
-    #vim \
+    vim \
     #Uncomment the lines below to add debuging \
     #valgrind \
     #gdb \
@@ -362,8 +366,10 @@ COPY --from=builder1 /zoo-project/zoo-project/zoo-services/utils/open-api/static
 COPY --from=builder1 /zoo-project/zoo-project/zoo-services/echo-py/cgi-env/ /usr/lib/cgi-bin/
 COPY --from=builder1 /zoo-project/zoo-project/zoo-services/deploy-py/cgi-env/ /usr/lib/cgi-bin/
 COPY --from=builder1 /zoo-project/zoo-project/zoo-services/undeploy-py/cgi-env/ /usr/lib/cgi-bin/
-COPY --from=builder1 /zoo-project/docker/.htaccess /var/www/html/.htaccess
-COPY --from=builder1 /zoo-project/docker/default.conf /000-default.conf
+# se eliminó la copia de .htaccess y default.conf de apache2
+# COPY --from=builder1 /zoo-project/docker/.htaccess /var/www/html/.htaccess
+# COPY --from=builder1 /zoo-project/docker/default.conf /000-default.conf
+COPY --from=builder1 /zoo-project/docker/nginx-default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder1 /zoo-project/zoo-project/zoo-services/utils/open-api/server/publish.py /usr/lib/cgi-bin/publish.py
 
 # Node.js global node_modules
@@ -401,7 +407,7 @@ RUN set -ex \
     && ln -s /usr/lib/x86_64-linux-gnu/saga/ /usr/lib/saga \
     && ln -s /testing /var/www/html/cptesting \
     && rm -rf /var/lib/apt/lists/* \
-    && cp /000-default.conf /etc/apache2/sites-available/ \
+    # && cp /000-default.conf /etc/apache2/sites-available/ \
     && export CPLUS_INCLUDE_PATH=/usr/include/gdal \
     && export C_INCLUDE_PATH=/usr/include/gdal \
     && pip3 install --upgrade pip setuptools wheel \
@@ -409,7 +415,8 @@ RUN set -ex \
     && python3 -m pip install --upgrade --no-cache-dir setuptools==57.5.0 \
     && pip3 install GDAL==2.4.2 \
     && pip3 install Cheetah3 redis spython \
-    && sed "s:AllowOverride None:AllowOverride All:g" -i /etc/apache2/apache2.conf \
+    # se eliminó la modificación de apache2.conf \
+    # && sed "s:AllowOverride None:AllowOverride All:g" -i /etc/apache2/apache2.conf \
     \
     # For using another port than 80, uncomment below. \
     # remember to also change the ports in docker-compose.yml \
@@ -424,13 +431,14 @@ RUN set -ex \
     # Update SAGA zcfg
     && sed "s:AllowedValues =    <Default>:AllowedValues =\n    <Default>:g" -i /usr/lib/cgi-bin/SAGA/*/*zcfg \
     && sed "s:Title = $:Title = No title found:g" -i /usr/lib/cgi-bin/SAGA/*/*.zcfg \
-    # Enable apache modules
+    # Enable apache modules \
+    # se eliminó la habilitación de mod_fcgid \
     \
-    && a2enmod cgi rewrite \
+    # && a2enmod cgi rewrite \
     \
     # Cleanup \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $BUILD_DEPS \
-    && rm -rf /var/lib/apt/lists/*
+    # && rm -rf /var/lib/apt/lists/*
 
 
 # service namespaces parent folder
@@ -440,4 +448,6 @@ RUN mkdir -p /opt/zooservices_namespaces && chmod -R 700 /opt/zooservices_namesp
 # For using another port than 80, change the value below.
 # remember to also change the ports in docker-compose.yml
 EXPOSE 80
-CMD /usr/sbin/apache2ctl -D FOREGROUND
+# se eliminó el arranque con apache2
+# CMD /usr/sbin/apache2ctl -D FOREGROUND
+CMD ["nginx", "-g", "daemon off;"]
