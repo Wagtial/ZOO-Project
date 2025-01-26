@@ -1,7 +1,7 @@
 #
 # Base: Ubuntu 18.04 with updates and external packages
 #
-FROM ubuntu:18.04 AS base
+FROM ubuntu:24.04 AS base
 ARG DEBIAN_FRONTEND=noninteractive
 ARG BUILD_DEPS=" \
     dirmngr \
@@ -108,7 +108,6 @@ WORKDIR /zoo-project
 COPY . .
 
 RUN set -ex \
-    && apt-get install -y libc6 \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get update && apt-get install -y --no-install-recommends $BUILD_DEPS \
     \
