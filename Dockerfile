@@ -135,7 +135,8 @@ RUN set -ex \
     #&& sed "s:-ljson-c:-Wl,-rpath,/usr/local/lib /usr/local/lib/libjson-c.so.5 :g" -i configure.ac \
     && autoconf \
     && find /usr -name otbWrapperApplication.h \
-    && touch config.guess config.sub \
+    && curl -o config.guess https://git.savannah.gnu.org/cgit/config.git/plain/config.guess \
+    && curl -o config.sub https://git.savannah.gnu.org/cgit/config.git/plain/config.sub \
     && ./configure --with-rabbitmq=yes --with-python=/usr --with-pyvers=3.10 \
               --with-nodejs=/usr --with-mapserver=/usr --with-ms-version=7  \
               --with-json=/usr --with-r=/usr --with-db-backend --prefix=/usr \
