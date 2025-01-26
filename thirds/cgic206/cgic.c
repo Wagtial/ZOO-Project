@@ -1746,7 +1746,7 @@ cgiFormResultType cgiCookieString(
 			genuine security concern. Thanks to Nicolas 
 			Tomadakis. */
 		while (*p == *n) {
-			if ((p == '\0') && (n == '\0')) {
+			if ((*p == '\0') && (*n == '\0')) {
 				/* Malformed cookie header from client */
 				return cgiFormNotFound;
 			}

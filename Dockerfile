@@ -7,7 +7,7 @@ ARG BUILD_DEPS=" \
     dirmngr \
     gpg-agent \
     software-properties-common \
-    #wget \
+    wget \
 "
 ARG RUN_DEPS=" \
     libcurl3-gnutls \
@@ -21,10 +21,11 @@ ARG RUN_DEPS=" \
     otb-bin \
     \
     libpq5 \
-    libpython3.6 \
+    libpython3.10 \
     libxslt1.1 \
     gdal-bin \
     libcgal-dev \
+    libcgal-qt5-dev \
     librabbitmq4 \
     nlohmann-json3-dev \
     python3 \
@@ -58,12 +59,14 @@ RUN set -ex \
     \
     && apt-get install -y $RUN_DEPS \
     \
-    && curl -o libmozjs185-1.0_1.8.5-1.0.0+dfsg-7_amd64.deb http://launchpadlibrarian.net/309343863/libmozjs185-1.0_1.8.5-1.0.0+dfsg-7_amd64.deb \
-    && curl -o libmozjs185-dev_1.8.5-1.0.0+dfsg-7_amd64.deb http://launchpadlibrarian.net/309343864/libmozjs185-dev_1.8.5-1.0.0+dfsg-7_amd64.deb \
-    && dpkg --force-depends -i libmozjs185-1.0_1.8.5-1.0.0+dfsg-7_amd64.deb \
-    && dpkg --force-depends -i libmozjs185-dev_1.8.5-1.0.0+dfsg-7_amd64.deb \
-    && apt  -y --fix-broken install \
-    && rm /libmozjs185*.deb \
+    && curl -LO http://archive.ubuntu.com/ubuntu/pool/main/libf/libffi/libffi6_3.2.1-8_amd64.deb \
+    && sudo dpkg -i libffi6_3.2.1-8_amd64.deb \
+    && wget http://launchpadlibrarian.net/309343863/libmozjs185-1.0_1.8.5-1.0.0+dfsg-7_amd64.deb \
+    && wget http://launchpadlibrarian.net/309343864/libmozjs185-dev_1.8.5-1.0.0+dfsg-7_amd64.deb \
+    && sudo dpkg --force-depends -i libmozjs185-1.0_1.8.5-1.0.0+dfsg-7_amd64.deb \
+    && sudo dpkg --force-depends -i libmozjs185-dev_1.8.5-1.0.0+dfsg-7_amd64.deb \
+    && apt -y --fix-broken install \
+    && rm libmozjs185*.deb libffi6*.deb \
     \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $BUILD_DEPS \
     && rm -rf /var/lib/apt/lists/*
@@ -115,6 +118,8 @@ ARG BUILD_DEPS=" \
     node-addon-api \
     nodejs \
     libaprutil1-dev \
+    libfcgi-dev \
+    libxslt-dev \
 "
 WORKDIR /zoo-project
 COPY . .
@@ -140,7 +145,7 @@ RUN set -ex \
     && ./configure --with-rabbitmq=yes --with-python=/usr --with-pyvers=3.10 \
               --with-nodejs=/usr --with-mapserver=/usr --with-ms-version=7  \
               --with-json=/usr --with-r=/usr --with-db-backend --prefix=/usr \
-              --with-otb=/usr/ --with-itk=/usr --with-otb-version=8.1 \
+              --with-otb=/usr --with-itk=/usr --with-otb-version=8.1 \
               --with-itk-version=4.12 --with-saga=/usr \
               --with-saga-version=7.2 --with-wx-config=/usr/bin/wx-config \
     && make -j4 \
@@ -244,6 +249,7 @@ ARG BUILD_DEPS=" \
     libxml2-dev \
     libxslt1-dev \
     libcgal-dev \
+    libcgal-qt5-dev \
     libnode-dev \
     node-addon-api \
 "

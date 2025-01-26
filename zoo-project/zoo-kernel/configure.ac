@@ -559,7 +559,7 @@ AC_ARG_WITH([cgal],
 
 # Check headers file
 CPPFLAGS_SAVE="$CPPFLAGS"
-CGAL_CPPFLAGS="-I$CGALPATH/include"
+CGAL_CPPFLAGS="-I$CGALPATH/include/CGAL"
 CPPFLAGS="$CGAL_CPPFLAGS"
 AC_CHECK_HEADERS([CGAL/Delaunay_triangulation_2.h],
          [], [AC_MSG_WARN([could not find headers include related to libCGAL])])
@@ -1133,7 +1133,7 @@ AC_ARG_WITH([otb],
 
 AC_ARG_WITH([otb-version],
         [AS_HELP_STRING([--with-otb-version=PATH], [Specifies an alternative location for the otb library])],
-        [OTBVERS="$withval"], [OTBVERS=""])
+        [OTBVERS="$withval"], [OTBVERS="8.1"])
 
 if test -z "$OTBPATH"
 then
