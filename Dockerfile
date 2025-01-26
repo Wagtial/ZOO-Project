@@ -74,6 +74,7 @@ RUN set -ex \
 FROM base AS builder1
 ARG DEBIAN_FRONTEND=noninteractive
 ARG BUILD_DEPS=" \
+    build-essential \
     bison \
     flex \
     make \
