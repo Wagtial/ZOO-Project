@@ -559,7 +559,7 @@ AC_ARG_WITH([cgal],
 
 # Check headers file
 CPPFLAGS_SAVE="$CPPFLAGS"
-CGAL_CPPFLAGS="-I$CGALPATH/include/CGAL"
+CGAL_CPPFLAGS="-I$CGALPATH/include"
 CPPFLAGS="$CGAL_CPPFLAGS"
 AC_CHECK_HEADERS([CGAL/Delaunay_triangulation_2.h],
          [], [AC_MSG_WARN([could not find headers include related to libCGAL])])
