@@ -332,6 +332,7 @@ ARG RUN_DEPS=" \
     # apache2 \
     # se agregó nginx \
     nginx \
+    fcgiwrap \
     curl \
     cgi-mapserver \
     mapserver-bin \
@@ -371,6 +372,8 @@ ARG WS_SERVER_URL="ws://localhost"
 
 WORKDIR /zoo-project
 COPY ./docker/startUp.sh /
+COPY ./docker/nginx-start.sh /
+RUN chmod +x /nginx-start.sh
 
 # From zoo-kernel
 COPY --from=builder1 /usr/lib/cgi-bin/ /usr/lib/cgi-bin/
@@ -470,4 +473,4 @@ RUN mkdir -p /opt/zooservices_namespaces && chmod -R 700 /opt/zooservices_namesp
 EXPOSE 80
 # se eliminó el arranque con apache2
 # CMD /usr/sbin/apache2ctl -D FOREGROUND
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/nginx-start.sh"]
