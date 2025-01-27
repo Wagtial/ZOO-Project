@@ -420,6 +420,7 @@ RUN set -ex \
     && sed "s=https://petstore.swagger.io/v2/swagger.json=${SERVER_URL}/ogc-api/api=g" -i /var/www/html/swagger-ui/dist/* \
     # se eliminó la configuración de apache2 \
     # && sed "s=http://localhost=$SERVER_URL=g" -i /var/www/html/.htaccess \
+    && rm /etc/nginx/sites-enabled/default \
     && rm /etc/nginx/sites-available/default \
     && sed "s=localhost=$SERVER_HOST=g" -i /etc/nginx/sites-available/zooproject \
     && ln -s /etc/nginx/sites-available/zooproject /etc/nginx/sites-enabled/zooproject \
