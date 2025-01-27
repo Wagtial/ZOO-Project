@@ -435,7 +435,7 @@ RUN set -ex \
     && pip3 install --upgrade pip setuptools wheel \
     # see various issue reported about _2to3 invocation and setuptools < 58.0 \
     && python3 -m pip install --upgrade --no-cache-dir setuptools==57.5.0 \
-    && pip3 install GDAL==2.4.2 \
+    && pip3 install GDAL==3.6.4 \
     && pip3 install Cheetah3 redis spython \
     # se eliminó la modificación de apache2.conf \
     # && sed "s:AllowOverride None:AllowOverride All:g" -i /etc/apache2/apache2.conf \
