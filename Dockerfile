@@ -452,7 +452,7 @@ RUN set -ex \
     # && sed "s:Listen 80:Listen $PORT:g" -i /etc/apache2/ports.conf \
     \
     && mkdir -p /tmp/zTmp/statusInfos \
-    && chown www-data:www-data -R /tmp/zTmp /usr/com/zoo-project \
+    && chown www-data:www-data -R /tmp/zTmp /usr/com/zoo-project /usr/lib/cgi-bin/ /var/run/fcgiwrap.socket \
     && chmod 755 /startUp.sh \
     \
     # remove invalid zcfgs \
