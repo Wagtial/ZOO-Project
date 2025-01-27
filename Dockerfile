@@ -333,6 +333,7 @@ ARG RUN_DEPS=" \
     # se agregó nginx \
     nginx \
     fcgiwrap \
+    spawn-fcgi \
     curl \
     cgi-mapserver \
     mapserver-bin \
