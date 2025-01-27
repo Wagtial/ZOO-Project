@@ -421,9 +421,7 @@ RUN set -ex \
     # se eliminó la configuración de apache2 \
     # && sed "s=http://localhost=$SERVER_URL=g" -i /var/www/html/.htaccess \
     && sed "s=localhost=$SERVER_HOST=g" -i /etc/nginx/sites-available/zooproject \
-    && rm /etc/nginx/sites-enabled/default \
-    && mv /etc/nginx/sites-available/zooproject /etc/nginx/sites-available/default \
-    && ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default \
+    && cp /etc/nginx/sites-available/zooproject /etc/nginx/sites-enabled/default \
     && sed "s=http://localhost=$SERVER_URL=g;s=publisherUr\=$SERVER_URL=publisherUrl\=http://localhost=g;s=ws://localhost=$WS_SERVER_URL=g" -i /usr/lib/cgi-bin/oas.cfg \
     && sed "s=http://localhost=$SERVER_URL=g" -i /usr/lib/cgi-bin/main.cfg \
     && for i in $(find /usr/share/locale/ -name "zoo-kernel.mo"); do \
