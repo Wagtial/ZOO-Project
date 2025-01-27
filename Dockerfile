@@ -394,7 +394,7 @@ COPY --from=builder1 /zoo-project/zoo-project/zoo-services/undeploy-py/cgi-env/ 
 # se eliminó la copia de .htaccess y default.conf de apache2
 # COPY --from=builder1 /zoo-project/docker/.htaccess /var/www/html/.htaccess
 # COPY --from=builder1 /zoo-project/docker/default.conf /000-default.conf
-COPY --from=builder1 /zoo-project/docker/nginx-default.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder1 /zoo-project/docker/nginx-default.conf /etc/nginx/sites-available/default
 COPY --from=builder1 /zoo-project/zoo-project/zoo-services/utils/open-api/server/publish.py /usr/lib/cgi-bin/publish.py
 
 # Node.js global node_modules
@@ -420,7 +420,7 @@ RUN set -ex \
     && sed "s=https://petstore.swagger.io/v2/swagger.json=${SERVER_URL}/ogc-api/api=g" -i /var/www/html/swagger-ui/dist/* \
     # se eliminó la configuración de apache2 \
     # && sed "s=http://localhost=$SERVER_URL=g" -i /var/www/html/.htaccess \
-    && sed "s=localhost=$SERVER_HOST=g" -i /etc/nginx/conf.d/default.conf \
+    && sed "s=localhost=$SERVER_HOST=g" -i /etc/nginx/sites-available/default \
     && sed "s=http://localhost=$SERVER_URL=g;s=publisherUr\=$SERVER_URL=publisherUrl\=http://localhost=g;s=ws://localhost=$WS_SERVER_URL=g" -i /usr/lib/cgi-bin/oas.cfg \
     && sed "s=http://localhost=$SERVER_URL=g" -i /usr/lib/cgi-bin/main.cfg \
     && for i in $(find /usr/share/locale/ -name "zoo-kernel.mo"); do \
