@@ -363,6 +363,7 @@ ARG BUILD_DEPS=" \
 #ARG SERVER_URL="http://zooprojectdemo.azurewebsites.net/"
 #ARG WS_SERVER_URL="ws://zooprojectdemo.azurewebsites.net"
 # For basic usage
+ARG SERVER_HOST="localhost"
 ARG SERVER_URL="http://localhost/"
 ARG WS_SERVER_URL="ws://localhost"
 
@@ -419,6 +420,7 @@ RUN set -ex \
     && sed "s=https://petstore.swagger.io/v2/swagger.json=${SERVER_URL}/ogc-api/api=g" -i /var/www/html/swagger-ui/dist/* \
     # se eliminó la configuración de apache2 \
     # && sed "s=http://localhost=$SERVER_URL=g" -i /var/www/html/.htaccess \
+    && sed "s=localhost=$SERVER_HOST=g" -i /etc/nginx/conf.d/default.conf \
     && sed "s=http://localhost=$SERVER_URL=g;s=publisherUr\=$SERVER_URL=publisherUrl\=http://localhost=g;s=ws://localhost=$WS_SERVER_URL=g" -i /usr/lib/cgi-bin/oas.cfg \
     && sed "s=http://localhost=$SERVER_URL=g" -i /usr/lib/cgi-bin/main.cfg \
     && for i in $(find /usr/share/locale/ -name "zoo-kernel.mo"); do \
