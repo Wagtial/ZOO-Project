@@ -83,7 +83,7 @@ RUN apt-get install add-apt-key \
      && grep "FALSE" -rni /usr/include/json-c \
      && ./configure --with-dru=yes \
      		    --with-python=yes \
-		    --with-pyvers=3.10 \
+		    --with-pyvers=3.12 \
 		    --with-mapserver=/usr \
 		    --with-ms-version=7 \
 		    --with-json=/usr \

@@ -21,7 +21,7 @@ ARG RUN_DEPS=" \
     otb-bin \
     \
     libpq5 \
-    libpython3.10 \
+    libpython3.12 \
     libxslt1.1 \
     gdal-bin \
     libcgal-dev \
@@ -143,7 +143,7 @@ RUN set -ex \
     && find /usr -name otbWrapperApplication.h \
     && curl -o config.guess https://git.savannah.gnu.org/cgit/config.git/plain/config.guess \
     && curl -o config.sub https://git.savannah.gnu.org/cgit/config.git/plain/config.sub \
-    && ./configure --with-rabbitmq=yes --with-python=/usr --with-pyvers=3.10 \
+    && ./configure --with-rabbitmq=yes --with-python=/usr --with-pyvers=3.12 \
               --with-nodejs=/usr --with-mapserver=/usr --with-ms-version=7  \
               --with-json=/usr --with-r=/usr --with-db-backend --prefix=/usr \
               --with-itk=/usr \
@@ -442,7 +442,7 @@ RUN set -ex \
     && pip3 install --upgrade pip setuptools wheel \
     # see various issue reported about _2to3 invocation and setuptools < 58.0 \
     && python3 -m pip install --upgrade --no-cache-dir setuptools==57.5.0 \
-    && pip3 install GDAL==3.6.4 \
+    && pip3 install GDAL==3.8.4 \
     && pip3 install Cheetah3 redis spython \
     # se eliminó la modificación de apache2.conf \
     # && sed "s:AllowOverride None:AllowOverride All:g" -i /etc/apache2/apache2.conf \

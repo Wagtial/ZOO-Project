@@ -23,7 +23,7 @@ ARG RUN_DEPS=" \
     #otb-bin \
     \
     libpq5 \
-    libpython3.6 \
+    libpython3.12 \
     libxslt1.1 \
     gdal-bin \
     #libcgal13 \
@@ -143,7 +143,7 @@ RUN set -ex \
        --with-run-path=/opt/otbtf/lib \
        --with-gdal-config=/opt/otbtf/bin/gdal-config \
        --with-mapserver=/opt/otbtf --with-ms-version=7 \
-       --with-python=/usr --with-pyvers=3.10 \
+       --with-python=/usr --with-pyvers=3.12 \
        --with-json=/usr \
        --with-r=/usr \
        --prefix=/usr \
