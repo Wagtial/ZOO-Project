@@ -21,7 +21,7 @@ ARG RUN_DEPS=" \
     otb-bin \
     \
     libpq5 \
-    libpython3.12 \
+    libpython3.10 \
     libxslt1.1 \
     gdal-bin \
     libcgal-dev \
@@ -143,7 +143,7 @@ RUN set -ex \
     && find /usr -name otbWrapperApplication.h \
     && curl -o config.guess https://git.savannah.gnu.org/cgit/config.git/plain/config.guess \
     && curl -o config.sub https://git.savannah.gnu.org/cgit/config.git/plain/config.sub \
-    && ./configure --with-rabbitmq=yes --with-python=/usr --with-pyvers=3.12 \
+    && ./configure --with-rabbitmq=yes --with-python=/usr --with-pyvers=3.10 \
               --with-nodejs=/usr --with-mapserver=/usr --with-ms-version=7  \
               --with-json=/usr --with-r=/usr --with-db-backend --prefix=/usr \
               --with-itk=/usr \

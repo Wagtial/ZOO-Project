@@ -316,7 +316,7 @@ bellow:
 
 ::
 
-  $ ./configure --with-pyvers=3.12
+  $ ./configure --with-pyvers=3.10
 
 
 .. _js-support:
