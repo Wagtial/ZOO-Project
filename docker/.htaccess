@@ -13,6 +13,7 @@ RewriteRule ^ogc-api(.*)$ /cgi-bin/zoo_loader.cgi?$1 [L,QSA]
 
 
 
+
 server {
     listen 80;
     server_name localhost;
