@@ -33,7 +33,7 @@ ARG RUN_DEPS=" \
     r-base \
     python3-pip \
     libnode93 \
-    libgdcm-tools \
+    libhdf5-openmpi-103-1 libnetcdf-c++4 libvtk7.1p libvtkgdcm3.0 libvtkgdcm-cil libgdcm-dev libgdcm-java libgdcm-tools libvtkgdcm-dev libvtkgdcm-java libvtkgdcm-tools python3-vtkgdcm python3-gdcm \
 "
 RUN set -ex \
     && apt-get update \
