@@ -550,7 +550,7 @@ __declspec(dllexport)
                 || GDALGetMetadataItem( hDriver, GDAL_DCAP_CREATECOPY,
                                         NULL ) != NULL )
 	      {
-		fprintf(stderr,msg);
+		fprintf(stderr, "%s", msg);
 		char *tmp=strdup(msg);
                 sprintf( msg,"%s  %s: %s\n",tmp,
                         GDALGetDriverShortName( hDriver  ),
