@@ -314,8 +314,7 @@ OGRDataSource*
                 poDstLayer->CreateField( poFDefn->GetFieldDefn(iField) );
             else
             {
-                fprintf( stderr, "Field '%s' not found in source layer.\n", 
-                        iField );
+                fprintf( stderr, "Field '%d' not found in source layer.\n", iField );
 		return SERVICE_FAILED;
             }
 	  }
@@ -330,8 +329,7 @@ OGRDataSource*
 	    if( poDstFeature->SetFrom( poFeature, TRUE ) != OGRERR_NONE )
 	      {
 		char tmpMsg[1024];
-		sprintf( tmpMsg,"Unable to translate feature %ld from layer %s.\n",
-			 poFeature->GetFID(), poFDefn->GetName() );
+		sprintf(tmpMsg, "Unable to translate feature %lld from layer %s.\n", poFeature->GetFID(), poFDefn->GetName());
 		
 		OGRFeature::DestroyFeature( poFeature );
 		OGRFeature::DestroyFeature( poDstFeature );
@@ -349,8 +347,7 @@ OGRDataSource*
 	    if(poDstFeature->SetGeometryDirectly(res) != OGRERR_NONE )
 	      {
 		char tmpMsg[1024];
-		sprintf( tmpMsg,"Unable to translate feature %ld from layer %s.\n",
-			 poFeature->GetFID(), poFDefn->GetName() );
+		sprintf(tmpMsg, "Unable to translate feature %lld from layer %s.\n", poFeature->GetFID(), poFDefn->GetName());
 		
 		OGRFeature::DestroyFeature( poFeature );
 		OGRFeature::DestroyFeature( poDstFeature );
@@ -571,8 +568,7 @@ int applyOne(maps*& conf,maps*& inputs,maps*& outputs,OGRGeometry* (OGRGeometry:
                 poDstLayer->CreateField( poFDefn->GetFieldDefn(iField) );
             else
             {
-                fprintf( stderr, "Field '%s' not found in source layer.\n", 
-                        iField );
+                fprintf(stderr, "Field '%d' not found in source layer.\n", iField);
 		return SERVICE_FAILED;
             }
 	  }
@@ -587,8 +583,7 @@ int applyOne(maps*& conf,maps*& inputs,maps*& outputs,OGRGeometry* (OGRGeometry:
 	    if( poDstFeature->SetFrom( poFeature, TRUE ) != OGRERR_NONE )
 	      {
 		char tmpMsg[1024];
-		sprintf( tmpMsg,"Unable to translate feature %ld from layer %s.\n",
-			 poFeature->GetFID(), poFDefn->GetName() );
+		sprintf(tmpMsg, "Unable to translate feature %lld from layer %s.\n", poFeature->GetFID(), poFDefn->GetName());
 		
 		OGRFeature::DestroyFeature( poFeature );
 		OGRFeature::DestroyFeature( poDstFeature );
@@ -597,8 +592,7 @@ int applyOne(maps*& conf,maps*& inputs,maps*& outputs,OGRGeometry* (OGRGeometry:
 	    if(poDstFeature->SetGeometryDirectly((poDstFeature->GetGeometryRef()->*myFunc)()) != OGRERR_NONE )
 	      {
 		char tmpMsg[1024];
-		sprintf( tmpMsg,"Unable to translate feature %ld from layer %s.\n",
-			 poFeature->GetFID(), poFDefn->GetName() );
+		sprintf(tmpMsg, "Unable to translate feature %lld from layer %s.\n", poFeature->GetFID(), poFDefn->GetName());
 		
 		OGRFeature::DestroyFeature( poFeature );
 		OGRFeature::DestroyFeature( poDstFeature );
@@ -818,8 +812,7 @@ int Buffer(maps*& conf,maps*& inputs,maps*& outputs){
                 poDstLayer->CreateField( poFDefn->GetFieldDefn(iField) );
             else
             {
-                fprintf( stderr, "Field '%s' not found in source layer.\n", 
-                        iField );
+                fprintf(stderr, "Field '%d' not found in source layer.\n", iField);
 		return SERVICE_FAILED;
             }
 	  }
@@ -834,8 +827,7 @@ int Buffer(maps*& conf,maps*& inputs,maps*& outputs){
 	    if( poDstFeature->SetFrom( poFeature, TRUE ) != OGRERR_NONE )
 	      {
 		char tmpMsg[1024];
-		sprintf( tmpMsg,"Unable to translate feature %ld from layer %s.\n",
-			 poFeature->GetFID(), poFDefn->GetName() );
+		sprintf(tmpMsg, "Unable to translate feature %lld from layer %s.\n", poFeature->GetFID(), poFDefn->GetName());
 		
 		OGRFeature::DestroyFeature( poFeature );
 		OGRFeature::DestroyFeature( poDstFeature );
