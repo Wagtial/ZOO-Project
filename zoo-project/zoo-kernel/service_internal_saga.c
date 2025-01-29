@@ -701,6 +701,7 @@ int sagaExportGDAL(maps** conf, maps** in/*,CSG_Parameter* param*/){
   }
   freeMap(&arg);
   free(arg);
+  return true; // Add return statement
 }
 
 /**
@@ -963,7 +964,7 @@ void sagaImportTable(maps** conf, maps** in){
  * @param conf the conf maps containing the main.cfg settings
  * @param in in the inputs maps
  */
-int sagaImportPC(maps** conf, maps** in){
+void sagaImportPC(maps** conf, maps** in){
   char *ext;
   map* arg;
   map* l=getMap((*in)->content,"length");
