@@ -199,7 +199,7 @@ char** listMapsKeys(maps* m){
     else
       res=(char**)realloc(res,(i+2)*sizeof(char*));
     res[i]=zStrdup(tmp->name);
-    res[i+1]="";
+    res[i + 1] = (char*)""; // Cast to char* to avoid warning
     i++;
     tmp=tmp->next;
   }
@@ -216,7 +216,7 @@ char** listMapKeys(map* m){
     else
       res=(char**)realloc(res,(i+2)*sizeof(char*));
     res[i]=zStrdup(tmp->name);
-    res[i+1]="";
+    res[i + 1] = (char*)""; // Cast to char* to avoid warning
     i++;
     tmp=tmp->next;
   }
