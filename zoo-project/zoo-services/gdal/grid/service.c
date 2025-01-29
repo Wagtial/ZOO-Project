@@ -606,9 +606,12 @@ static void ProcessLayer( OGRLayerH hSrcLayer, GDALDatasetH hDstDS,
                             nXRequest, nYRequest, eType, pData,
                             GDALScaledProgress, pScaledProgress );
 
-            GDALRasterIO( hBand, GF_Write, nXOffset, nYOffset,
+            CPLErr eErr = GDALRasterIO( hBand, GF_Write, nXOffset, nYOffset,
                           nXRequest, nYRequest, pData,
                           nXRequest, nYRequest, eType, 0, 0 );
+            if (eErr != CE_None) {
+                fprintf(stderr, "Error with raster data: %s\n", CPLGetLastErrorMsg());
+            }
 
             GDALDestroyScaledProgress( pScaledProgress );
         }
@@ -876,7 +879,7 @@ int main( int argc, char ** argv )
     tmpMap=getMapFromMaps(inputs,"OutputDSN","value");
     if(tmpMap!=NULL){
       pszDest=(char*)malloc(sizeof(char)*(strlen(tempPath)+strlen(tmpMap->value)+4));
-      char *ext=new char[4];
+      const char *ext=new char[4];
       ext="tif";
       if(strncasecmp(pszFormat,"AAIGRID",7)==0)
         ext="csv";
