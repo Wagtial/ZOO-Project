@@ -261,7 +261,7 @@ CPLErr GDALGeneric3x3Processing  ( GDALRasterBandH hSrcBand,
     /* Preload the first 2 lines */
     for ( i = 0; i < 2 && i < nYSize; i++)
     {
-        GDALRasterIO(   hSrcBand,
+        CPLErr eErr = GDALRasterIO(hSrcBand,
                         GF_Read,
                         0, i,
                         nXSize, 1,
@@ -269,6 +269,9 @@ CPLErr GDALGeneric3x3Processing  ( GDALRasterBandH hSrcBand,
                         nXSize, 1,
                         GDT_Float32,
                         0, 0);
+        if (eErr != CE_None) {
+            fprintf(stderr, "Error reading raster data: %s\n", CPLGetLastErrorMsg());
+        }
     }
     
     if (bComputeAtEdges && nXSize >= 2 && nYSize >= 2)
@@ -293,9 +296,12 @@ CPLErr GDALGeneric3x3Processing  ( GDALRasterBandH hSrcBand,
                                          afWin, fDstNoDataValue,
                                          pfnAlg, pData, bComputeAtEdges);
         }
-        GDALRasterIO(hDstBand, GF_Write,
+        CPLErr eErr = GDALRasterIO(hDstBand, GF_Write,
                     0, 0, nXSize, 1,
                     pafOutputBuf, nXSize, 1, GDT_Float32, 0, 0);
+        if (eErr != CE_None) {
+            fprintf(stderr, "Error with raster data: %s\n", CPLGetLastErrorMsg());
+        }
     }
     else
     {
@@ -304,9 +310,12 @@ CPLErr GDALGeneric3x3Processing  ( GDALRasterBandH hSrcBand,
         {
             pafOutputBuf[j] = fDstNoDataValue;
         }
-        GDALRasterIO(hDstBand, GF_Write,
+        CPLErr eErr = GDALRasterIO(hDstBand, GF_Write,
                     0, 0, nXSize, 1,
                     pafOutputBuf, nXSize, 1, GDT_Float32, 0, 0);
+        if (eErr != CE_None) {
+            fprintf(stderr, "Error with raster data: %s\n", CPLGetLastErrorMsg());
+        }
     
         if (nYSize > 1)
         {
@@ -437,9 +446,12 @@ CPLErr GDALGeneric3x3Processing  ( GDALRasterBandH hSrcBand,
                                          afWin, fDstNoDataValue,
                                          pfnAlg, pData, bComputeAtEdges);
         }
-        GDALRasterIO(hDstBand, GF_Write,
+        CPLErr eErr = GDALRasterIO(hDstBand, GF_Write,
                      0, i, nXSize, 1,
                      pafOutputBuf, nXSize, 1, GDT_Float32, 0, 0);
+        if (eErr != CE_None) {
+            fprintf(stderr, "Error with raster data: %s\n", CPLGetLastErrorMsg());
+        }
     }
 
     pfnProgress( 1.0, NULL, pProgressData );
