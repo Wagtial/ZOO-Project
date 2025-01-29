@@ -319,9 +319,12 @@ CPLErr GDALGeneric3x3Processing  ( GDALRasterBandH hSrcBand,
     
         if (nYSize > 1)
         {
-            GDALRasterIO(hDstBand, GF_Write,
+            CPLErr eErr = GDALRasterIO(hDstBand, GF_Write,
                         0, nYSize - 1, nXSize, 1,
                         pafOutputBuf, nXSize, 1, GDT_Float32, 0, 0);
+            if (eErr != CE_None) {
+                fprintf(stderr, "Error with raster data: %s\n", CPLGetLastErrorMsg());
+            }
         }
     }
     
