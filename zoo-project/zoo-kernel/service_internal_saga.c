@@ -911,7 +911,7 @@ bool sagaImportTIN(maps** conf, maps** in){
  * @param conf the conf maps containing the main.cfg settings
  * @param in in the inputs maps
  */
-int sagaImportTable(maps** conf, maps** in){
+void sagaImportTable(maps** conf, maps** in){
   char *ext;
   map* arg;
   map* l=getMap((*in)->content,"length");
