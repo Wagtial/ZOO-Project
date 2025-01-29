@@ -1254,7 +1254,8 @@ int main( int argc, char ** argv )
     GDALDestroyDriverManager();
  
     outputs=(maps*)malloc(sizeof(maps*));
-    outputs->name="OutputedPolygon";
+    // outputs->name="OutputedPolygon";
+    outputs->name = const_cast<char*>("OutputedPolygon");
     outputs->content=createMap("value",(char*)pszDest);
     addMapToMap(&outputs->content,createMap("dataType","string"));
     outputs->next=NULL;
