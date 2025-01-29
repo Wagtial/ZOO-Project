@@ -28,7 +28,7 @@
 
 extern "C" {
 
-  static char* supportedType[]={
+  static const char* supportedType[]={
     "Basic",
     NULL
   };
