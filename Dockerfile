@@ -378,7 +378,6 @@ ARG WS_SERVER_URL="ws://localhost"
 WORKDIR /zoo-project
 COPY ./docker/startUp.sh /
 COPY ./docker/nginx-start.sh /
-RUN chmod +x /nginx-start.sh
 
 # From zoo-kernel
 COPY --from=builder1 /usr/lib/cgi-bin/ /usr/lib/cgi-bin/
@@ -433,7 +432,7 @@ RUN set -ex \
          locale-gen $j ; \
          localedef -i $j -c -f UTF-8 -A /usr/share/locale/locale.alias ${j}.UTF-8; \
        done \
-    && mv  /var/www/html/swagger-ui/dist  /var/www/html/swagger-ui/oapip \
+    && mv /var/www/html/swagger-ui/dist  /var/www/html/swagger-ui/oapip \
     && mkdir /tmp/zTmp \
     && ln -s /tmp/zTmp /var/www/html/temp \
     && ln -s /usr/lib/x86_64-linux-gnu/saga/ /usr/lib/saga \
@@ -457,6 +456,7 @@ RUN set -ex \
     && mkdir -p /tmp/zTmp/statusInfos \
     && chown www-data:www-data -R /tmp/zTmp /usr/com/zoo-project /usr/lib/cgi-bin/ \
     && chmod 755 /startUp.sh \
+    && chmod +x /nginx-start.sh \
     \
     # remove invalid zcfgs \
     && rm /usr/lib/cgi-bin/SAGA/db_pgsql/6.zcfg /usr/lib/cgi-bin/SAGA/imagery_tools/8.zcfg /usr/lib/cgi-bin/SAGA/grid_calculus_bsl/0.zcfg /usr/lib/cgi-bin/SAGA/grids_tools/1.zcfg /usr/lib/cgi-bin/SAGA/grid_visualisation/1.zcfg /usr/lib/cgi-bin/SAGA/ta_lighting/2.zcfg /usr/lib/cgi-bin/OTB/TestApplication.zcfg /usr/lib/cgi-bin/OTB/StereoFramework.zcfg \
