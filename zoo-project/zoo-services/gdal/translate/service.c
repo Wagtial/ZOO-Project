@@ -128,7 +128,7 @@ __declspec(dllexport)
     tmpMap=getMapFromMaps(inputs,"OutputDSN","value");
     if(tmpMap!=NULL){
       pszDest=(char*)CPLMalloc(sizeof(char)*(strlen(tempPath)+strlen(tmpMap->value)+4));
-      char *ext=new char[4];
+      const char *ext=new char[4];
       ext="tif";
       if(strncasecmp(pszFormat,"AAIGRID",7)==0)
 	ext="csv";
