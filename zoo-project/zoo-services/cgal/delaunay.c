@@ -91,7 +91,7 @@ extern "C" {
       {
 	char emessage[8192];
 	sprintf( emessage, "Unable to find driver `%s'.\n", oDriver );
-	snprintf(emessage, sizeof(emessage), "%sThe following drivers are available:\n", emessage);
+	sprintf(emessage, "%sThe following drivers are available:\n", emessage);
         
 	for( iDriver = 0; iDriver < poR->GetDriverCount(); iDriver++ )
 	  {
