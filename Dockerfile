@@ -11,7 +11,8 @@ ARG BUILD_DEPS=" \
 "
 ARG RUN_DEPS=" \
     libcurl3-gnutls \
-    libfcgi \
+    libfcgi-dev \
+    libfcgi-bin \
     libmapserver-dev \
     curl \
     \
@@ -30,7 +31,7 @@ ARG RUN_DEPS=" \
     nlohmann-json3-dev \
     python3 \
     r-base \
-    python3-pip\
+    python3-pip \
     libnode93 \
 "
 RUN set -ex \
@@ -100,6 +101,7 @@ ARG BUILD_DEPS=" \
     # Comment lines before this one if nor OTB nor SAGA \
     git \
     libfcgi-dev \
+    libfcgi-bin \
     libgdal-dev \
     libwxgtk3.0-gtk3-dev \
     libjson-c-dev \
@@ -118,7 +120,6 @@ ARG BUILD_DEPS=" \
     node-addon-api \
     nodejs \
     libaprutil1-dev \
-    libfcgi-dev \
     libxslt-dev \
     libopengl-dev \
 "
@@ -246,6 +247,7 @@ ARG BUILD_DEPS=" \
     gcc \
     libc-dev \
     libfcgi-dev \
+    libfcgi-bin \
     libgdal-dev \
     libxml2-dev \
     libxslt1-dev \
