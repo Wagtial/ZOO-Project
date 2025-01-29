@@ -34,7 +34,7 @@
 typedef CGAL::Exact_predicates_inexact_constructions_kernel            Kernel;
 typedef Kernel::Point_2                                                Pointz;
 
-int parseInput(maps*,maps*, std::vector<Pointz>*,char*);
+int parseInput(maps*,maps*, std::vector<Pointz>*, const char*);
 
 #endif
 

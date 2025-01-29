@@ -10,8 +10,7 @@ RewriteRule ^ogc-api(.*).html$ /cgi-bin/zoo_loader.cgi?service=WPS&service=WPS&r
 RewriteRule ^ogc-api(.*)$ /cgi-bin/zoo_loader.cgi?$1 [L,QSA]
 
 
-
-
+apt install bison flex make autoconf g++ gcc libc-dev libfcgi-dev libfcgi-bin libgdal-dev libxml2-dev libxslt1-dev libcgal-dev libcgal-qt5-dev libnode-dev node-addon-api
 
 server {
 listen 80;
