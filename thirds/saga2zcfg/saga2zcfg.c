@@ -488,7 +488,7 @@ int main(int argc, char *argv[]) {
 		      }else{
 			  fprintf(stdout1,"  <LiteralData>\n");
 			  // fprintf(stdout1,"   dataType = %s\n",CSG_String(param->Get_Type_Identifier()));
-			  fprintf(stdout1,"   dataType = %s\n", CSG_String(param->Get_Type_Identifier()).mb_str());
+			  fprintf(stdout1,"   dataType = %s\n", CSG_String(param->Get_Type_Identifier()).b_str());
 			  fprintf(stdout1,"   <Default/>\n");
 			  fprintf(stdout1,"  </LiteralData>\n");
 			}
