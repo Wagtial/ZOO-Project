@@ -109,7 +109,7 @@ __declspec(dllexport)
   int Gdal_Contour(maps*& conf,maps*& inputs,maps*& outputs)
 #endif
 {
-    fprintf(stderr,"DEBUG HELLO %f %d\n",__FILE__,__LINE__);
+    fprintf(stderr, "DEBUG HELLO %s %d\n",__FILE__,__LINE__);
     fflush(stderr);
     GDALDatasetH	hSrcDS;
     int i, b3D = FALSE, bNoDataSet = FALSE, bIgnoreNoData = FALSE;
