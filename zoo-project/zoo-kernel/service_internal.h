@@ -37,7 +37,10 @@
 /**
  * ZOO-Kernel internal messages translation function
  */
+// Prevent redefinition of _
+#ifndef _
 #define _(String) dgettext ("zoo-kernel",String)
+#endif
 /**
  * ZOO-Services messages translation function
  */
