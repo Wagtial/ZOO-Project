@@ -97,9 +97,12 @@ extern "C" {
 	for( iDriver = 0; iDriver < poR->GetDriverCount(); iDriver++ )
 	  {
 #if GDAL_VERSION_MAJOR >= 2
-	    sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetDescription() );
+	    // sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetDescription() );
+	    snprintf(emessage + strlen(emessage), sizeof(emessage) - strlen(emessage), "%s -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetDescription());
+
 #else
-	    sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetName() );
+	    // sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetName() );
+	    snprintf(emessage + strlen(emessage), sizeof(emessage) - strlen(emessage), "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetName() );
 #endif
 	  }
 
