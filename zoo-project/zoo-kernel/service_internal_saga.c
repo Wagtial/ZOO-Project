@@ -581,7 +581,7 @@ int sagaExecuteCmd(maps** main_conf,const char* lib_name,const char* module_name
  * @param main_conf the conf maps containing the main.cfg settings
  * @param in the output maps to fill with the resulting file
  */
-int sagaExportOGR(maps** conf, maps** in){
+void sagaExportOGR(maps** conf, maps** in){
   map* mtype=getMap((*in)->content,"mimeType");
   map* gfile=getMap((*in)->content,"generated_file");
   char* fext=NULL;
