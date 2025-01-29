@@ -244,14 +244,14 @@ OGRDataSource*
 	  {
 	    char emessage[8192];
 	    sprintf( emessage, "Unable to find driver `%s'.\n", oDriver );
-	    sprintf( emessage,  "%sThe following drivers are available:\n",emessage );
+	    snprintf(emessage + strlen(emessage), sizeof(emessage) - strlen(emessage),  "%sThe following drivers are available:\n", emessage );
 	    
 	    for( iDriver = 0; iDriver < poR->GetDriverCount(); iDriver++ )
 	      {
 #if GDAL_VERSION_MAJOR >=2
-		sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetDescription() );
+		snprintf( emessage + strlen(emessage), sizeof(emessage) - strlen(emessage),  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetDescription() );
 #else
-		sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetName() );
+		snprintf( emessage + strlen(emessage), sizeof(emessage) - strlen(emessage),  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetName() );
 #endif
 	      }
 	    
@@ -491,13 +491,13 @@ int applyOne(maps*& conf,maps*& inputs,maps*& outputs,OGRGeometry* (OGRGeometry:
 	  {
 	    char emessage[8192];
 	    sprintf( emessage, "Unable to find driver `%s'.\n", oDriver );
-	    sprintf( emessage,  "%sThe following drivers are available:\n",emessage );
+	    snprintf( emessage + strlen(emessage), sizeof(emessage) - strlen(emessage),  "%sThe following drivers are available:\n",emessage );
 	    for( iDriver = 0;iDriver < poR->GetDriverCount();iDriver++ )	    
 	      {
 #if GDAL_VERSION_MAJOR >=2
-		sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetDescription() );
+		snprintf( emessage + strlen(emessage), sizeof(emessage) - strlen(emessage),  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetDescription() );
 #else
-		sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetName() );
+		snprintf( emessage + strlen(emessage), sizeof(emessage) - strlen(emessage),  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetName() );
 #endif
 	      }
 	    
@@ -1472,8 +1472,7 @@ int Centroid(maps*& conf,maps*& inputs,maps*& outputs){
 		  if( poDstFeature->SetFrom( poFeature2, TRUE ) != OGRERR_NONE )
 		    {
 		      char tmpMsg[1024];
-		      sprintf( tmpMsg,"Unable to translate feature %ld from layer %s.\n",
-			       poFeature2->GetFID(), poFDefn->GetName() );
+		      sprintf( tmpMsg, "Unable to translate feature %lld from layer %s.\n", poFeature2->GetFID(), poFDefn->GetName() );
 		      
 		      OGRFeature::DestroyFeature( poFeature1 );
 		      OGRFeature::DestroyFeature( poFeature2 );
@@ -1831,7 +1830,7 @@ int Centroid(maps*& conf,maps*& inputs,maps*& outputs){
     }
     fprintf(stderr,"geometry created %s \n",tmp->value);
     res=OGR_G_Area(geometry);
-    fprintf(stderr,"area %d \n",res);
+    fprintf(stderr,"area %f \n", res);
     /**
      * Filling the outputs
      */
