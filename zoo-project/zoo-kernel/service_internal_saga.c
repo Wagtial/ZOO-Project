@@ -719,10 +719,12 @@ int sagaExportGDAL(maps** conf, maps** in/*,CSG_Parameter* param*/){
 int sagaExportTIN(maps** conf, maps** in,const char* tname/*,CSG_Parameter* param*/){
   map* mtype=getMap((*in)->content,"mimeType");
   map* gfile=getMap((*in)->content,"generated_file");
-  char* fext="shp";
+  // char* fext="shp";
+  const char* fext = "shp"; // Use const char* instead of char*
   map* arg=createMap("TIN",gfile->value);
 
-  char* tinOut[5]={
+  // char* tinOut[5]={
+  const char* tinOut[5] = {
     "POINTS",
     "CENTER",
     "EDGES",
