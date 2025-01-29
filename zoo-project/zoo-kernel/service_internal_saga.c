@@ -775,7 +775,7 @@ int sagaExportTIN(maps** conf, maps** in,const char* tname/*,CSG_Parameter* para
  * @param conf the conf maps containing the main.cfg settings
  * @param in in the inputs maps
  */
-int sagaImportGDAL(maps** conf, maps** in){
+void sagaImportGDAL(maps** conf, maps** in){
   map* l=getMap((*in)->content,"length");
   bool shouldClean=false;
   if(l==NULL){
@@ -818,7 +818,7 @@ int sagaImportGDAL(maps** conf, maps** in){
  * @param conf the conf maps containing the main.cfg settings
  * @param in in the inputs maps
  */
-int sagaImportOGR(maps** conf, maps** in){
+void sagaImportOGR(maps** conf, maps** in){
   char *ext;
   map* arg;
   map* l=getMap((*in)->content,"length");
