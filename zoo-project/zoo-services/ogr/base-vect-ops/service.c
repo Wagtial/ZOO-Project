@@ -424,7 +424,7 @@ int applyOne(maps*& conf,maps*& inputs,maps*& outputs,OGRGeometry* (OGRGeometry:
 	for( int iDriver = 0; iDriver < poR->GetDriverCount(); iDriver++ )
 	  {
 #if GDAL_VERSION_MAJOR >=2
-		sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetDescription() );
+		snprintf( emessage + strlen(emessage), sizeof(emessage) - strlen(emessage),  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetDescription() );
 		fprintf( stderr, "  -> %s\n", poR->GetDriver(iDriver)->GetDescription() );
 #else
 		sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetName() );
@@ -432,7 +432,7 @@ int applyOne(maps*& conf,maps*& inputs,maps*& outputs,OGRGeometry* (OGRGeometry:
 #endif
 	  }
 	char tmp[1024];
-	sprintf(tmp,"Unable to open datasource `%s' with the following drivers.\n%s",filename,emessage);
+	snprintf(tmp + strlen(tmp), sizeof(tmp) - strlen(tmp), "Unable to open datasource `%s' with the following drivers.\n%s",filename,emessage);
 	setMapInMaps(conf,"lenv","message",tmp);
 	return SERVICE_FAILED;
       }
@@ -735,12 +735,12 @@ int Buffer(maps*& conf,maps*& inputs,maps*& outputs){
 	  {
 	    char emessage[8192];
 	    sprintf( emessage, "Unable to find driver `%s'.\n", oDriver );
-	    sprintf( emessage,  "%sThe following drivers are available:\n",emessage );
+	    snprintf( emessage + strlen(emessage), sizeof(emessage) - strlen(emessage),  "%sThe following drivers are available:\n",emessage );
 	    
 	    for( iDriver = 0; iDriver < poR->GetDriverCount(); iDriver++ )
 	      {
 #if GDAL_VERSION_MAJOR >=2
-		sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetDescription() );
+		snprintf( emessage + strlen(emessage), sizeof(emessage) - strlen(emessage),  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetDescription() );
 #else
 		sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetName() );
 #endif
