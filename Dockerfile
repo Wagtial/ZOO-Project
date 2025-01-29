@@ -33,6 +33,7 @@ ARG RUN_DEPS=" \
     r-base \
     python3-pip \
     libnode93 \
+    libgdcm-tools \
 "
 RUN set -ex \
     && apt-get update \
