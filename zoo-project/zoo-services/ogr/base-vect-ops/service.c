@@ -836,8 +836,7 @@ int Buffer(maps*& conf,maps*& inputs,maps*& outputs){
 	    if(poDstFeature->SetGeometryDirectly(poDstFeature->GetGeometryRef()->Buffer(bufferDistance,30)) != OGRERR_NONE )
 	      {
 		char tmpMsg[1024];
-		sprintf( tmpMsg,"Unable to translate feature %ld from layer %s.\n",
-			 poFeature->GetFID(), poFDefn->GetName() );
+		sprintf( tmpMsg, "Unable to translate feature %lld from layer %s.\n", poFeature->GetFID(), poFDefn->GetName() );
 		
 		OGRFeature::DestroyFeature( poFeature );
 		OGRFeature::DestroyFeature( poDstFeature );
@@ -1050,8 +1049,7 @@ int Centroid(maps*& conf,maps*& inputs,maps*& outputs){
                 poDstLayer->CreateField( poFDefn->GetFieldDefn(iField) );
             else
             {
-                fprintf( stderr, "Field '%s' not found in source layer.\n", 
-                        iField );
+                fprintf( stderr, "Field '%d' not found in source layer.\n", iField );
 		return SERVICE_FAILED;
             }
 	  }
@@ -1066,8 +1064,7 @@ int Centroid(maps*& conf,maps*& inputs,maps*& outputs){
 	    if( poDstFeature->SetFrom( poFeature, TRUE ) != OGRERR_NONE )
 	      {
 		char tmpMsg[1024];
-		sprintf( tmpMsg,"Unable to translate feature %ld from layer %s.\n",
-			 poFeature->GetFID(), poFDefn->GetName() );
+		sprintf( tmpMsg, "Unable to translate feature %lld from layer %s.\n", poFeature->GetFID(), poFDefn->GetName() );
 		
 		OGRFeature::DestroyFeature( poFeature );
 		OGRFeature::DestroyFeature( poDstFeature );
@@ -1077,8 +1074,7 @@ int Centroid(maps*& conf,maps*& inputs,maps*& outputs){
 	    poDstFeature->GetGeometryRef()->Centroid(poPoint);
 	    if(poDstFeature->SetGeometryDirectly(poPoint)!= OGRERR_NONE ){
 	      char tmpMsg[1024];
-	      sprintf( tmpMsg,"Unable to translate feature %ld from layer %s.\n",
-		       poFeature->GetFID(), poFDefn->GetName() );
+	      sprintf( tmpMsg, "Unable to translate feature %lld from layer %s.\n", poFeature->GetFID(), poFDefn->GetName() );
 	      
 	      OGRFeature::DestroyFeature( poFeature );
 	      OGRFeature::DestroyFeature( poDstFeature );
@@ -1456,8 +1452,7 @@ int Centroid(maps*& conf,maps*& inputs,maps*& outputs){
 		  poDstLayer->CreateField( poFDefn->GetFieldDefn(iField) );
 		else
 		  {
-		    fprintf( stderr, "Field '%s' not found in source layer.\n", 
-			     iField );
+		    fprintf( stderr, "Field '%d' not found in source layer.\n", iField );
 		    return SERVICE_FAILED;
 		  }
 	      }
@@ -1488,8 +1483,7 @@ int Centroid(maps*& conf,maps*& inputs,maps*& outputs){
 		  if(poDstFeature->SetGeometryDirectly((poFeature1->GetGeometryRef()->*myFunc)(poFeature2->GetGeometryRef())) != OGRERR_NONE )
 		    {
 		      char tmpMsg[1024];
-		      sprintf( tmpMsg,"Unable to translate feature %ld from layer %s.\n",
-			       poFeature2->GetFID(), poFDefn->GetName() );
+		      sprintf( tmpMsg, "Unable to translate feature %lld from layer %s.\n", poFeature2->GetFID(), poFDefn->GetName() );
 		      
 		      OGRFeature::DestroyFeature( poFeature1 );
 		      OGRFeature::DestroyFeature( poFeature2 );
