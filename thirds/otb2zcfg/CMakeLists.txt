@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.10)
 
 project(otb2zcfg)
 
-set(OpenGL_GL_PREFERENCE LEGACY)
-
 find_package(Boost 1.65.0 COMPONENTS serialization filesystem REQUIRED)
 find_package(OTB REQUIRED)
 find_package(OpenGL REQUIRED)
