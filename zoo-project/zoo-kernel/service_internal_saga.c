@@ -634,7 +634,8 @@ void sagaExportOGR(maps** conf, maps** in){
 void sagaExportPC(maps** conf, maps** in){
   map* mtype=getMap((*in)->content,"mimeType");
   map* gfile=getMap((*in)->content,"generated_file");
-  char* fext="las";
+  // char* fext="las";
+  const char* fext = "las"; // Use const char* instead of char*
   map* arg=NULL;
   char* tmpName=(char*)malloc((strlen(gfile->value)+2)*sizeof(char));
   strncpy(tmpName,gfile->value,(strlen(gfile->value)-3)*sizeof(char));
