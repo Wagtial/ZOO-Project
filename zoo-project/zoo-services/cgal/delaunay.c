@@ -91,9 +91,8 @@ extern "C" {
       {
 	char emessage[8192];
 	sprintf( emessage, "Unable to find driver `%s'.\n", oDriver );
-	snprintf(emessage + strlen(emessage), sizeof(emessage) - strlen(emessage), "The following drivers are available:\n");
+	snprintf(emessage + strlen(emessage), sizeof(emessage) - strlen(emessage), "%sThe following drivers are available:\n", emessage);
 
-        
 	for( iDriver = 0; iDriver < poR->GetDriverCount(); iDriver++ )
 	  {
 #if GDAL_VERSION_MAJOR >= 2
@@ -102,7 +101,7 @@ extern "C" {
 
 #else
 	    // sprintf( emessage,  "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetName() );
-	    snprintf(emessage + strlen(emessage), sizeof(emessage) - strlen(emessage), "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetName() );
+	    snprintf(emessage + strlen(emessage), sizeof(emessage) - strlen(emessage), "%s  -> `%s'\n", emessage, poR->GetDriver(iDriver)->GetName());
 #endif
 	  }
 
