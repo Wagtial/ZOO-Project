@@ -157,7 +157,8 @@ extern "C" {
     map* tpath=getMapFromMaps(conf,"main","tmpPath");
     char *pszDestDataSource=(char*)malloc(100);
     char **papszDSCO=NULL;
-    sprintf(pszDestDataSource,"/vsimem/result_%d.json",tpath->value,getpid());
+    // sprintf(pszDestDataSource,"/vsimem/result_%d.json",tpath->value,getpid());
+    sprintf(pszDestDataSource, "/vsimem/result_%s_%d.json", tpath->value, getpid());
 #if GDAL_VERSION_MAJOR >=2
     poODS = poDriver->Create( pszDestDataSource, 0, 0, 0, GDT_Unknown, papszDSCO );
 #else
