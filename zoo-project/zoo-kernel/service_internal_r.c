@@ -95,7 +95,7 @@ int zoo_r_support(maps** main_conf,map* request,service* s,maps **real_inputs,ma
   map* cwdMap=getMapFromMaps(*main_conf,"main","servicePath");
   int r_argc = 3;
   const char* r_argv[] = { "R", "--no-save", "--silent" };
-  Rf_initEmbeddedR(r_argc, r_argv);
+  Rf_initEmbeddedR(r_argc, (char**)r_argv);
   if(cwdMap!=NULL)
     r_path=cwdMap->value;
   else{
