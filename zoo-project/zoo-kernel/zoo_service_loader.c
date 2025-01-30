@@ -59,7 +59,7 @@ extern "C" int crlex ();
 #include <libintl.h>
 #include <locale.h>
 #include <string.h>
-#include <iostream.h>
+#include <iostream>
 
 #include "service_internal.h"
 #include "server_internal.h"
