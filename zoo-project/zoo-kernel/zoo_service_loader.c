@@ -59,7 +59,6 @@ extern "C" int crlex ();
 #include <libintl.h>
 #include <locale.h>
 #include <string.h>
-#include <iostream>
 
 #include "service_internal.h"
 #include "server_internal.h"
@@ -290,7 +289,7 @@ int createSPidFile(maps* pmsConf,char* pcPath){
 /*
 #ifndef RELY_ON_DB
 // TODO: implement this function in service_internal.c
-// Implement user filtering when not relying on DB 
+// Implement user filtering when not relying on DB
 void filterJobByUser(maps* pmsConf,char** pcaClauseFinal,char* pcaClauseDate){
 }
 #endif
@@ -571,7 +570,7 @@ _recursReaddirF ( maps * m, registry *r, void* doc1, void* n1, char *conf_dir,
             char *tmpsn = (char*)malloc((strlen(dp->d_name)-4)*sizeof(char));//zStrdup (dp->d_name);
             memset (tmpsn, 0, strlen(dp->d_name)-4);
             snprintf(tmpsn,strlen(dp->d_name)-4,"%s",dp->d_name);
-            
+
             map* import = getMapFromMaps (m, IMPORTSERVICE, tmpsn);
             if (import == NULL || import->value == NULL || zoo_path_compare(tmps1, import->value) != 0 ) { // service is not in [include] block
               if(compareCnt(m,"serviceCntSkip","eupper") && compareCnt(m,"serviceCntLimit","lower")){
@@ -731,7 +730,7 @@ void exitAndCleanUp(registry* zooRegistry, maps** ppmsConf,
     sprintf (tmp01,
              _("Unable to parse the ZCFG file: %s."),
              zcfg);
-  
+
   map* errormap = createMap("text", tmp01);
   map* tmpMap=getMapFromMaps(m,"main","executionType");
   char* errorCode=(char*)code;
@@ -773,11 +772,11 @@ int _fetchService(registry* zooRegistry,maps** pmsConf,service** spService, map*
   map* pmExecutionType=getMapFromMaps(m,"main","executionType");
   map* pmContinue=getMapFromMaps(m,"lenv","can_continue");
   map* import = getMapFromMaps (m, IMPORTSERVICE, cIdentifier);
-  if (import != NULL && import->value != NULL) { 
+  if (import != NULL && import->value != NULL) {
     strncpy(tmps1, import->value, 1024);
     setMapInMaps (m, "lenv", "Identifier", cIdentifier);
     setMapInMaps (m, "lenv", "oIdentifier", cIdentifier);
-  } 
+  }
   else {
     snprintf (tmps1, 1024, "%s/%s.zcfg", pcDir, cIdentifier);
 #ifdef DEBUG
@@ -956,7 +955,7 @@ int fetchService(registry* zooRegistry,maps** pmsConf,service** spService, map* 
 }
 
 /**
- * Search services from various possible sources 
+ * Search services from various possible sources
  *
  * @param zopRegistry the populated registry
  * @param m the maps pointer to the content of main.cfg file
@@ -986,10 +985,10 @@ int _fetchServicesForDescription(registry* zooRegistry, maps** pmsConf, char* r_
   zDup2 (fileno (stderr), fileno (stdout));
   if (strcasecmp ("all", orig) == 0)
     {
-      maps* imports = getMaps(m, IMPORTSERVICE); 
-      if (imports != NULL) {       
+      maps* imports = getMaps(m, IMPORTSERVICE);
+      if (imports != NULL) {
         map* zcfg = imports->content;
-            
+
         while (zcfg != NULL) {
           if (zcfg->value != NULL) {
             service* svc = (service*) malloc(SERVICE_SIZE);
@@ -1264,7 +1263,7 @@ int _fetchServicesForDescription(registry* zooRegistry, maps** pmsConf, char* r_
 }
 
 /**
- * Search services from various possible sources 
+ * Search services from various possible sources
  *
  * @param zopRegistry the populated registry
  * @param m the maps pointer to the content of main.cfg file
@@ -1384,7 +1383,7 @@ int loadHttpRequests(maps* conf,maps* inputs){
  * Initialize environment sections, load env, and populate lenv and renv.
  *
  * @param conf the maps pointing to the main.cfg file content
- * @param request_inputs the map pointing to the request KVP 
+ * @param request_inputs the map pointing to the request KVP
  * @param cPath a string pointing to the cwd
  * @param request a string pointing to the request key (xrequest or jrequest)
  */
@@ -1455,21 +1454,21 @@ void initAllEnvironment(maps* conf,map* request_inputs,
   free (_tmpMaps);
   /**
    * Initialize the specific [lenv] section which contains runtime variables:
-   * 
-   *  - usid : it is an universally unique identifier  
-   *  - osid : it is an idenfitication number 
+   *
+   *  - usid : it is an universally unique identifier
+   *  - osid : it is an idenfitication number
    *  - sid : it is the process idenfitication number (OS)
-   *  - uusid : it is an universally unique identifier 
-   *  - status : value between 0 and 100 to express the  completude of 
-   * the operations of the running service 
-   *  - message : is a string where you can store error messages, in case 
+   *  - uusid : it is an universally unique identifier
+   *  - status : value between 0 and 100 to express the  completude of
+   * the operations of the running service
+   *  - message : is a string where you can store error messages, in case
    * service is failing, or o provide details on the ongoing operation.
    *  - cwd : the current working directory or servicePath if defined
-   *  - soap : is a boolean value, true if the request was contained in a SOAP 
-   * Envelop 
-   *  - sessid : string storing the session identifier (only when cookie is 
+   *  - soap : is a boolean value, true if the request was contained in a SOAP
+   * Envelop
+   *  - sessid : string storing the session identifier (only when cookie is
    * used)
-   *  - cgiSid : only defined on Window platforms (for being able to identify 
+   *  - cgiSid : only defined on Window platforms (for being able to identify
    * the created process)
    *
    */
@@ -1556,13 +1555,13 @@ void initAllEnvironment(maps* conf,map* request_inputs,
   dumpMap (request_inputs);
 #endif
   int ei = 1;
-  
+
   _tmpMaps = createMaps("renv");
 
 #ifdef WIN32
   LPVOID orig = GetEnvironmentStrings();
   LPTSTR s = (LPTSTR) orig;
-  
+
   while (*s != NULL) {
     char* env = strdup(s);
     char* delim = strchr(env,'=');
@@ -1577,12 +1576,12 @@ void initAllEnvironment(maps* conf,map* request_inputs,
       }
     }
     s += strlen(s)+1;
-  } 
+  }
   FreeEnvironmentStrings((LPCH)orig);
 #else
   char **orig = environ;
   char *s=*orig;
-  
+
   if(orig!=NULL)
     for (; s; ei++ ) {
       if(strstr(s,"=")!=NULL && strlen(strstr(s,"="))>1){
@@ -1601,7 +1600,7 @@ void initAllEnvironment(maps* conf,map* request_inputs,
       s = *(orig+ei);
     }
 #endif
-  
+
   if(_tmpMaps->content!=NULL && getMap(_tmpMaps->content,"HTTP_COOKIE")!=NULL){
     addToMap(_tmpMaps->content,"HTTP_COOKIE1",&cgiCookie[0]);
   }
@@ -1664,7 +1663,7 @@ donothing (int sig)
 void
 sig_handler (int sig)
 {
-  
+
   char tmp[100];
   const char *ssig;
   switch (sig)
@@ -1751,7 +1750,7 @@ void json_sig_handler (int sig){
 #endif
   exit (0);
 }
-  
+
 #endif
 
 /**
@@ -1808,7 +1807,7 @@ loadServiceAndRun (maps ** myMap, service * s1, map * request_inputs,
     }
   }
   map *r_inputs = NULL;
-  // Verify if the servicePath is defined in the main section of the 
+  // Verify if the servicePath is defined in the main section of the
   // main.cfg file
   map* cwdMap=getMapFromMaps(m,"main","servicePath");
   if(cwdMap!=NULL){
@@ -1819,7 +1818,7 @@ loadServiceAndRun (maps ** myMap, service * s1, map * request_inputs,
       return;
     }
   }
-  r_inputs = getMap (s1->content, "serviceType");  
+  r_inputs = getMap (s1->content, "serviceType");
 #ifdef DEBUG
   fprintf (stderr, "LOAD A %s SERVICE PROVIDER \n", r_inputs->value);
   fflush (stderr);
@@ -2292,7 +2291,7 @@ createProcess (maps * m, map * request_inputs, service * s1, char *opts,
   map *di = getMap (request_inputs, "DataInputs");
 
   // The required size for the dataInputsKVP and dataOutputsKVP buffers
-  // may exceed cgiContentLength, hence a 2 kb extension. However, a 
+  // may exceed cgiContentLength, hence a 2 kb extension. However, a
   // better solution would be to have getMapsAsKVP() determine the required
   // buffer size before allocating memory.
   char *dataInputsKVP = getMapsAsKVP (inputs, cgiContentLength + 2048, 0);
@@ -2305,7 +2304,7 @@ createProcess (maps * m, map * request_inputs, service * s1, char *opts,
   map *usid = getMapFromMaps (m, "lenv", "usid");
   map *r_inputs = getMapFromMaps (m, "main", "tmpPath");
   map *r_inputs1 = getMap (request_inputs, "metapath");
-  
+
   int hasIn = -1;
   if (r_inputs1 == NULL)
     {
@@ -2382,7 +2381,7 @@ createProcess (maps * m, map * request_inputs, service * s1, char *opts,
   // (process hangs when reading cgiIn):
   SetEnvironmentVariable("REQUEST_METHOD", "GET");
   SetEnvironmentVariable("CONTENT_TYPE", "text/plain");
-  
+
   char clen[1000];
   sprintf (clen, "%d", strlen (tmpq));
   SetEnvironmentVariable ("CONTENT_LENGTH", TEXT (clen));
@@ -2446,12 +2445,12 @@ int runRequest(map** inputs) {
 
   // Register basic handler for signals
   register_signals(sig_handler);
-  
+
   map *r_inputs = NULL;
   map *request_inputs = *inputs;
 #ifdef IGNORE_METAPATH
   addToMap(request_inputs, "metapath", "");
-#endif  
+#endif
   maps *pmsaConfig = NULL;
   char *REQUEST = NULL;
 
@@ -2495,7 +2494,7 @@ int runRequest(map** inputs) {
   maps* zooServicesNamespaceMap=getMaps(pmsaConfig,"zooServicesNamespace");
 
   //
-  // Bind the following gettext domains: 
+  // Bind the following gettext domains:
   //  * zoo-kernel: for the ZOO-Kernel messages
   //  * zoo-services: for the ZOO-Services messages
   //
@@ -2511,7 +2510,7 @@ int runRequest(map** inputs) {
 
   //
   // Manage our own error log file (usefull to separate standard apache debug
-  // messages from the ZOO-Kernel ones but also for IIS users to avoid wrong 
+  // messages from the ZOO-Kernel ones but also for IIS users to avoid wrong
   // headers messages returned by the CGI due to wrong redirection of stderr)
   //
   // This default configuration can be changed during the compilation of ZOO-kernel
@@ -2627,7 +2626,7 @@ int runRequest(map** inputs) {
     setMapInMaps (pmsaConfig, "main", "isSoap", "false");
 
   //
-  // Set the serverAddress in the main section or in the lenv section depending 
+  // Set the serverAddress in the main section or in the lenv section depending
   // on the proxied parameter.
   // It proxied is defined, the serverAddress is set in the lenv section.
   //
@@ -2700,7 +2699,7 @@ int runRequest(map** inputs) {
   // Get the services namespace path
   getServicesNamespacePath(pmsaConfig,conf_dir_,conf_dir,1024);
 #ifdef DEBUG
-  ZOO_DEBUG("conf_dir: %s", conf_dir_);
+  //ZOO_DEBUG("conf_dir: %s", conf_dir_);
   fprintf (stderr, "conf_dir: %s\n", conf_dir_);
   fprintf (stderr, "new conf_dir: %s\n", conf_dir);
 #endif
@@ -3248,24 +3247,19 @@ int runRequest(map** inputs) {
     // Returns list of processes
     else if(strncasecmp(pmCgiRequestMethod->value,"get",3)==0 && (strcmp(pcaCgiQueryString,"/processes")==0 || strcmp(pcaCgiQueryString,"/processes/")==0)){
       /* - /processes */
-
-      std::cout << "Entering /processes block" << std::endl;
       setMapInMaps(pmsaConfig,"lenv","requestType","desc");
       setMapInMaps(pmsaConfig,"lenv","serviceCnt","0");
       setMapInMaps(pmsaConfig,"lenv","serviceCounter","0");
       map* pmTmp=getMap(request_inputs,"limit");
       if(pmTmp!=NULL)
-        std::cout << "Limit found: " << pmTmp->value << std::endl;
         setMapInMaps(pmsaConfig,"lenv","serviceCntLimit",pmTmp->value);
       else{
         pmTmp=getMapFromMaps(pmsaConfig,"limitParam","schema_default");
         if(pmTmp!=NULL)
-          std::cout << "Default limit found: " << pmTmp->value << std::endl;
           setMapInMaps(pmsaConfig,"lenv","serviceCntLimit",pmTmp->value);
       }
       pmTmp=getMap(request_inputs,"skip");
       if(pmTmp!=NULL)
-        std::cout << "Skip found: " << pmTmp->value << std::endl;
         setMapInMaps(pmsaConfig,"lenv","serviceCntSkip",pmTmp->value);
       json_object *res3=json_object_new_array();
       int saved_stdout = zDup (fileno (stdout));
@@ -3273,10 +3267,7 @@ int runRequest(map** inputs) {
       if (int res0 =
           recursReaddirF (pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0,
                           printGetCapabilitiesForProcessJ) < 0) {
-                          std::cout << "recursReaddirF" << std::endl;
-                          std::cout << res0 << std::endl;
       }else{
-        std::cout << "recursReaddirF succeeded" << std::endl;
         fflush(stderr);
         fflush(stdout);
         zDup2 (saved_stdout, fileno (stdout));
@@ -3284,7 +3275,6 @@ int runRequest(map** inputs) {
       zClose(saved_stdout);
 #ifdef META_DB
       int nbServices=fetchServicesFromDb(zooRegistry,pmsaConfig,res3,NULL,printGetCapabilitiesForProcessJ,1);
-      std::cout << "Number of services fetched from DB: " << nbServices << std::endl;
       // Keep track of the total number of processes
       map* pmCnt=getMapFromMaps(pmsaConfig,"lenv","serviceCnt");
       char acCnt[10];
@@ -3907,7 +3897,7 @@ int runRequest(map** inputs) {
           // request is synchronous
           map* pmMutable=getMap(s1->content,"mutable");
           // Does not allow synchronous mode for mutable processes
-          if(pmMutable!=NULL && 
+          if(pmMutable!=NULL &&
             (strncasecmp(pmMutable->value,"true",4)==0 ||
             strncmp(pmMutable->value,"1",1)==0)){
             map* pmError=createMap("code","None");
@@ -4472,7 +4462,7 @@ int runRequest(map** inputs) {
         maps* imports = getMaps(pmsaConfig, IMPORTSERVICE);
         if (imports != NULL) {
           map* zcfg = imports->content;
-        
+
           while (zcfg != NULL) {
             if (zcfg->value != NULL) {
               service* svc = (service*) malloc(SERVICE_SIZE);
@@ -4510,7 +4500,7 @@ int runRequest(map** inputs) {
 #ifdef META_DB
         fetchServicesFromDb(zooRegistry,pmsaConfig,doc,n,printGetCapabilitiesForProcess,1);
         close_sql(pmsaConfig,0);
-#endif      
+#endif
         printDocument (pmsaConfig, doc, zGetpid ());
         freeMaps (&pmsaConfig);
         free (pmsaConfig);
@@ -4711,7 +4701,7 @@ int runRequest(map** inputs) {
       free (SERVICE_URL);
       return -1;
     }
-  
+
 #ifdef DEBUG
     dumpService (s1);
 #endif
@@ -4761,12 +4751,12 @@ int runRequest(map** inputs) {
 
     map *status = getMap (request_inputs, "status");
     if(vid==0){
-      // Need to check if we need to fork to load a status enabled 
+      // Need to check if we need to fork to load a status enabled
       r_inputs = NULL;
       map *store = getMap (request_inputs, "storeExecuteResponse");
       /**
        * 05-007r7 WPS 1.0.0 page 57 :
-       * 'If status="true" and storeExecuteResponse is "false" then the service 
+       * 'If status="true" and storeExecuteResponse is "false" then the service
        * shall raise an exception.'
        */
       if (status != NULL && strcmp (status->value, "true") == 0 &&
@@ -4862,7 +4852,7 @@ int runRequest(map** inputs) {
           freeMaps (&request_output_real_format);
           free (request_output_real_format);
           freeMaps (&tmpmaps);
-          free (tmpmaps); 
+          free (tmpmaps);
 #ifdef META_DB
           close_sql(pmsaConfig,0);
           end_sql();
@@ -4877,7 +4867,7 @@ int runRequest(map** inputs) {
 
 #ifdef META_DB
         close_sql(pmsaConfig,0);
-#endif      
+#endif
       }
     else
       {
@@ -5144,7 +5134,7 @@ int runRequest(map** inputs) {
   }
   /**
    * Ensure that if error occurs when freeing memory, no signal will return
-   * an ExceptionReport document as the result was already returned to the 
+   * an ExceptionReport document as the result was already returned to the
    * client.
    */
   register_signals(donothing);
@@ -5255,9 +5245,9 @@ int runRequest(map** inputs) {
 /**
  * Process the request asyncrhonously.
  *
- * @param conf the main configuration maps 
- * @param lenv the lenv map 
- * @param inputs the request parameters map 
+ * @param conf the main configuration maps
+ * @param lenv the lenv map
+ * @param inputs the request parameters map
  * @return 0 on sucess, other value on failure
  */
 int
