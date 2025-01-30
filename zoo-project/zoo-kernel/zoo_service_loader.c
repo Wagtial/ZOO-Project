@@ -59,6 +59,7 @@ extern "C" int crlex ();
 #include <libintl.h>
 #include <locale.h>
 #include <string.h>
+#include <iostream.h>
 
 #include "service_internal.h"
 #include "server_internal.h"
@@ -3245,77 +3246,60 @@ int runRequest(map** inputs) {
     }
     // GET method to route /processes or /processes/
     // Returns list of processes
-    else if (pmCgiRequestMethod != NULL && pcaCgiQueryString != NULL &&
-         strncasecmp(pmCgiRequestMethod->value, "get", 3) == 0 &&
-         (strcmp(pcaCgiQueryString, "/processes") == 0 || strcmp(pcaCgiQueryString, "/processes/") == 0)) {
-    /* - /processes */
-    setMapInMaps(pmsaConfig, "lenv", "requestType", "desc");
-    setMapInMaps(pmsaConfig, "lenv", "serviceCnt", "0");
-    setMapInMaps(pmsaConfig, "lenv", "serviceCounter", "0");
+    else if(strncasecmp(pmCgiRequestMethod->value,"get",3)==0 && (strcmp(pcaCgiQueryString,"/processes")==0 || strcmp(pcaCgiQueryString,"/processes/")==0)){
+      /* - /processes */
 
-    map* pmTmp = getMap(request_inputs, "limit");
-    if (pmTmp != NULL) {
-        setMapInMaps(pmsaConfig, "lenv", "serviceCntLimit", pmTmp->value);
-    } else {
-        pmTmp = getMapFromMaps(pmsaConfig, "limitParam", "schema_default");
-        if (pmTmp != NULL) {
-            setMapInMaps(pmsaConfig, "lenv", "serviceCntLimit", pmTmp->value);
-        }
-    }
-
-    pmTmp = getMap(request_inputs, "skip");
-    if (pmTmp != NULL) {
-        setMapInMaps(pmsaConfig, "lenv", "serviceCntSkip", pmTmp->value);
-    }
-
-    json_object *res3 = json_object_new_array();
-    if (res3 == NULL) {
-        fprintf(stderr, "Error: Failed to create JSON array\n");
-        return 1;
-    }
-
-    int saved_stdout = zDup(fileno(stdout));
-    if (saved_stdout < 0) {
-        fprintf(stderr, "Error: Failed to duplicate stdout\n");
-        return 1;
-    }
-
-    zDup2(fileno(stderr), fileno(stdout));
-
-    int res0 = recursReaddirF(pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0, printGetCapabilitiesForProcessJ);
-    if (res0 < 0) {
-        fprintf(stderr, "Error: recursReaddirF failed\n");
+      std::cout << "Entering /processes block" << std::endl;
+      setMapInMaps(pmsaConfig,"lenv","requestType","desc");
+      setMapInMaps(pmsaConfig,"lenv","serviceCnt","0");
+      setMapInMaps(pmsaConfig,"lenv","serviceCounter","0");
+      map* pmTmp=getMap(request_inputs,"limit");
+      if(pmTmp!=NULL)
+        std::cout << "Limit found: " << pmTmp->value << std::endl;
+        setMapInMaps(pmsaConfig,"lenv","serviceCntLimit",pmTmp->value);
+      else{
+        pmTmp=getMapFromMaps(pmsaConfig,"limitParam","schema_default");
+        if(pmTmp!=NULL)
+          std::cout << "Default limit found: " << pmTmp->value << std::endl;
+          setMapInMaps(pmsaConfig,"lenv","serviceCntLimit",pmTmp->value);
+      }
+      pmTmp=getMap(request_inputs,"skip");
+      if(pmTmp!=NULL)
+        std::cout << "Skip found: " << pmTmp->value << std::endl;
+        setMapInMaps(pmsaConfig,"lenv","serviceCntSkip",pmTmp->value);
+      json_object *res3=json_object_new_array();
+      int saved_stdout = zDup (fileno (stdout));
+      zDup2 (fileno (stderr), fileno (stdout));
+      if (int res0 =
+          recursReaddirF (pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0,
+                          printGetCapabilitiesForProcessJ) < 0) {
+                          std::cout << "recursReaddirF" << std::endl;
+                          std::cout << res0 << std::endl;
+      }else{
+        std::cout << "recursReaddirF succeeded" << std::endl;
         fflush(stderr);
         fflush(stdout);
-        zDup2(saved_stdout, fileno(stdout));
-        zClose(saved_stdout);
-        return 1;
-    } else {
-        fflush(stderr);
-        fflush(stdout);
-        zDup2(saved_stdout, fileno(stdout));
-        zClose(saved_stdout);
-    }
-
+        zDup2 (saved_stdout, fileno (stdout));
+      }
+      zClose(saved_stdout);
 #ifdef META_DB
-    int nbServices = fetchServicesFromDb(zooRegistry, pmsaConfig, res3, NULL, printGetCapabilitiesForProcessJ, 1);
-    // Keep track of the total number of processes
-    map* pmCnt = getMapFromMaps(pmsaConfig, "lenv", "serviceCnt");
-    char acCnt[10];
-    if (pmCnt != NULL) {
-        sprintf(acCnt, "%d", nbServices + atoi(pmCnt->value));
-    } else {
-        sprintf(acCnt, "%d", nbServices);
-    }
-    setMapInMaps(pmsaConfig, "lenv", "serviceCnt", acCnt);
-    // We can now close the SQL backend connection
-    close_sql(pmsaConfig, 0);
+      int nbServices=fetchServicesFromDb(zooRegistry,pmsaConfig,res3,NULL,printGetCapabilitiesForProcessJ,1);
+      std::cout << "Number of services fetched from DB: " << nbServices << std::endl;
+      // Keep track of the total number of processes
+      map* pmCnt=getMapFromMaps(pmsaConfig,"lenv","serviceCnt");
+      char acCnt[10];
+      if(pmCnt!=NULL)
+        sprintf(acCnt,"%d",nbServices+atoi(pmCnt->value));
+      else
+        sprintf(acCnt,"%d",nbServices);
+      setMapInMaps(pmsaConfig,"lenv","serviceCnt",acCnt);
+      // We can now close the SQL backend connexion
+      close_sql(pmsaConfig,0);
 #endif
-
-    json_object_object_add(res, "processes", res3);
-    setMapInMaps(pmsaConfig, "lenv", "path", "processes");
-    createNextLinks(pmsaConfig, res);
-}
+      json_object_object_add(res,"processes",res3);
+      setMapInMaps(pmsaConfig,"lenv","path","processes");
+      createNextLinks(pmsaConfig,res);
+    }
     else if(strstr(pcaCgiQueryString,"/processes")==NULL && (strstr(pcaCgiQueryString,"/jobs")!=NULL || strstr(pcaCgiQueryString,"/jobs/")!=NULL)){
       /* - /jobs url */
       if(strncasecmp(pmCgiRequestMethod->value,"DELETE",6)==0) {
