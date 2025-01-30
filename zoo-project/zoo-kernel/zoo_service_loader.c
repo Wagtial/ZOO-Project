@@ -3245,8 +3245,12 @@ int runRequest(map** inputs) {
     }
     // GET method to route /processes or /processes/
     // Returns list of processes
-    else if(strncasecmp(cgiRequestMethod,"GET",3)==0 && (strstr(pcaCgiQueryString,"/processes")==NULL || strstr(pcaCgiQueryString,"/processes/")==NULL)){
+    fprintf(stderr,"pcaCgiQueryString: %s\n",pcaCgiQueryString);
+    fprintf(stderr,"cgiRequestMethod: %s\n",cgiRequestMethod);
+
+    else if(strncasecmp(cgiRequestMethod,"GET",3)==0 && (strstr(pcaCgiQueryString,"/processes")!=NULL || strstr(pcaCgiQueryString,"/processes/")!=NULL)){
       /* - /processes */
+      fprintf(stderr,"ADENTRO DEL IF\n");
       setMapInMaps(pmsaConfig,"lenv","requestType","desc");
       setMapInMaps(pmsaConfig,"lenv","serviceCnt","0");
       setMapInMaps(pmsaConfig,"lenv","serviceCounter","0");
@@ -3290,6 +3294,9 @@ int runRequest(map** inputs) {
       setMapInMaps(pmsaConfig,"lenv","path","processes");
       createNextLinks(pmsaConfig,res);
     }
+
+
+
     else if(strstr(pcaCgiQueryString,"/processes")==NULL && (strstr(pcaCgiQueryString,"/jobs")!=NULL || strstr(pcaCgiQueryString,"/jobs/")!=NULL)){
       /* - /jobs url */
       if(strncasecmp(pmCgiRequestMethod->value,"DELETE",6)==0) {
