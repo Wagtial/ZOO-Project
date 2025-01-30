@@ -3247,6 +3247,7 @@ int runRequest(map** inputs) {
     // Returns list of processes
     else if(strncasecmp(pmCgiRequestMethod->value,"get",3)==0 && (strcmp(pcaCgiQueryString,"/processes")==0 || strcmp(pcaCgiQueryString,"/processes/")==0)){
       /* - /processes */
+      fprintf(stderr, "Request method is GET and query string is /processes or /processes/\n");
       setMapInMaps(pmsaConfig,"lenv","requestType","desc");
       setMapInMaps(pmsaConfig,"lenv","serviceCnt","0");
       setMapInMaps(pmsaConfig,"lenv","serviceCounter","0");
