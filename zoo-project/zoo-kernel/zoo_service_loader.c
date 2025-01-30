@@ -3255,16 +3255,23 @@ int runRequest(map** inputs) {
       setMapInMaps(pmsaConfig,"lenv","serviceCnt","0");
       setMapInMaps(pmsaConfig,"lenv","serviceCounter","0");
       map* pmTmp=getMap(request_inputs,"limit");
-      if(pmTmp!=NULL)
+      if(pmTmp!=NULL) {
+        fprintf(stderr,"pmTmp: %s\n",pmTmp);
+        fprintf(stderr,"pmTmp!=NULL: %s\n",pmTmp!=NULL);
         setMapInMaps(pmsaConfig,"lenv","serviceCntLimit",pmTmp->value);
-      else{
+      } else {
         pmTmp=getMapFromMaps(pmsaConfig,"limitParam","schema_default");
+        fprintf(stderr,"pmTmp: %s\n",pmTmp);
         if(pmTmp!=NULL)
+        fprintf(stderr,"pmTmp: %s\n",pmTmp);
+        fprintf(stderr,"pmTmp!=NULL: %s\n",pmTmp!=NULL);
           setMapInMaps(pmsaConfig,"lenv","serviceCntLimit",pmTmp->value);
       }
       pmTmp=getMap(request_inputs,"skip");
-      if(pmTmp!=NULL)
+      fprintf(stderr,"pmTmp getMap: %s\n", pmTmp);
+      if(pmTmp!=NULL) {
         setMapInMaps(pmsaConfig,"lenv","serviceCntSkip",pmTmp->value);
+      }
       json_object *res3=json_object_new_array();
       fprintf(stderr,"json_object: %s\n", res3);
       int saved_stdout = zDup (fileno (stdout));
