@@ -3245,12 +3245,12 @@ int runRequest(map** inputs) {
     }
     // GET method to route /processes or /processes/
     // Returns list of processes
-    sprintf(stderr,"pcaCgiQueryString: %s\n",pcaCgiQueryString);
-    sprintf(stderr,"cgiRequestMethod: %s\n",cgiRequestMethod);
+
 
     else if(strncasecmp(cgiRequestMethod,"GET",3)==0 && (strstr(pcaCgiQueryString,"/processes")!=NULL || strstr(pcaCgiQueryString,"/processes/")!=NULL)){
       /* - /processes */
-      sprintf(stderr,"ADENTRO DEL IF %s\n", cgiRequestMethod);
+        sprintf(stderr,"pcaCgiQueryString: %s\n",pcaCgiQueryString);
+        sprintf(stderr,"cgiRequestMethod: %s\n",cgiRequestMethod);
       setMapInMaps(pmsaConfig,"lenv","requestType","desc");
       setMapInMaps(pmsaConfig,"lenv","serviceCnt","0");
       setMapInMaps(pmsaConfig,"lenv","serviceCounter","0");
