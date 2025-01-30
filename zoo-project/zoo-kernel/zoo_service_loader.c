@@ -3266,11 +3266,15 @@ int runRequest(map** inputs) {
       if(pmTmp!=NULL)
         setMapInMaps(pmsaConfig,"lenv","serviceCntSkip",pmTmp->value);
       json_object *res3=json_object_new_array();
+      fprintf(stderr,"json_object: %s\n", res3);
       int saved_stdout = zDup (fileno (stdout));
+      fprintf(stderr,"saved_stdout: %s\n", saved_stdout);
       zDup2 (fileno (stderr), fileno (stdout));
+      fprintf(stderr,"zDup2: %s\n", zDup2);
       if (int res0 =
           recursReaddirF (pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0,
                           printGetCapabilitiesForProcessJ) < 0) {
+                          fprintf(stderr,"res0: %s\n", res0);
       }else{
         fflush(stderr);
         fflush(stdout);
@@ -3291,6 +3295,7 @@ int runRequest(map** inputs) {
       close_sql(pmsaConfig,0);
 #endif
       json_object_object_add(res,"processes",res3);
+      fprintf(stderr,"res: %s\n", res);
       setMapInMaps(pmsaConfig,"lenv","path","processes");
       createNextLinks(pmsaConfig,res);
     }
