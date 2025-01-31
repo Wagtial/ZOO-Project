@@ -3294,7 +3294,7 @@ int runRequest(map** inputs) {
       fprintf(stderr, "saved_stdout: %d\n", saved_stdout);
       zDup2 (fileno (stderr), fileno (stdout));
 
-      int res0 = recursReaddirF(pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0, printGetCapabilitiesForProcessJ);
+      int res0 = recursReaddirF(&pmsaConfig, NULL, (void*) res3, NULL, ntmp, NULL, saved_stdout, 0, printGetCapabilitiesForProcessJ);
 
       if (res0 < 0) {
           fprintf(stderr, "Error: recursReaddirF returned %d\n", res0);
