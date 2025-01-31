@@ -3304,7 +3304,7 @@ int runRequest(map** inputs) {
         fflush(stdout);
         zDup2 (saved_stdout, fileno (stdout));
 
-        json_str = json_object_to_json_string(res3);
+        const char *json_str = json_object_to_json_string(res3);
         fprintf(stderr, "JSON Object after recursReaddirF: %s\n", json_str);
       }
       zClose(saved_stdout);
