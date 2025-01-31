@@ -3303,6 +3303,8 @@ int runRequest(map** inputs) {
 
       int saved_stdout = zDup (fileno (stdout));
       fprintf(stderr, "saved_stdout: %d\n", saved_stdout);
+      const char *json_str = json_object_to_json_string(res3);
+      fprintf(stderr, "JSON Object after recursReaddirF: %s\n", json_str);
       zDup2 (fileno (stderr), fileno (stdout));
 
       int res0 = recursReaddirF(pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0, printGetCapabilitiesForProcessJ);
@@ -3314,9 +3316,6 @@ int runRequest(map** inputs) {
         fflush(stderr);
         fflush(stdout);
         zDup2 (saved_stdout, fileno (stdout));
-
-        const char *json_str = json_object_to_json_string(res3);
-        fprintf(stderr, "JSON Object after recursReaddirF: %s\n", json_str);
       }
       zClose(saved_stdout);
 #ifdef META_DB
