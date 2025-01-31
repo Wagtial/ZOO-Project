@@ -3247,8 +3247,8 @@ int runRequest(map** inputs) {
     // Returns list of processes
 
 
-    // else if(strncasecmp(cgiRequestMethod,"GET",3)==0 && (strstr(pcaCgiQueryString,"/processes")!=NULL || strstr(pcaCgiQueryString,"/processes/")!=NULL)){
-    else if(strncasecmp(pmCgiRequestMethod->value,"get",3)==0 && (strcmp(pcaCgiQueryString,"/processes")==0 || strcmp(pcaCgiQueryString,"/processes/")==0)){
+    else if(strncasecmp(cgiRequestMethod,"GET",3)==0 && (strstr(pcaCgiQueryString,"/processes")!=NULL || strstr(pcaCgiQueryString,"/processes/")!=NULL)){
+    // else if(strncasecmp(pmCgiRequestMethod->value,"get",3)==0 && (strcmp(pcaCgiQueryString,"/processes")==0 || strcmp(pcaCgiQueryString,"/processes/")==0)){
       /* - /processes */
 
       fprintf(stderr,"pcaCgiQueryString: %s\n",pcaCgiQueryString);
@@ -3283,13 +3283,16 @@ int runRequest(map** inputs) {
           setMapInMaps(pmsaConfig,"lenv","serviceCntLimit",pmTmp->value);
         }
       }
-      fprintf(stderr,"AQUI: %s\n", pmTmp->value);
+      fprintf(stderr, "AQUI pmsaConfig: %s\n", pmsaConfig);
       pmTmp=getMap(request_inputs,"skip");
-      fprintf(stderr,"pmTmp getMap: %s\n", pmTmp->value);
+      fprintf(stderr,"pmTmp getMap skip: %s\n", pmTmp->name);
+      fprintf(stderr,"pmTmp getMap skip: %s\n", pmTmp->value);
       if(pmTmp!=NULL) {
         setMapInMaps(pmsaConfig,"lenv","serviceCntSkip", pmTmp->value);
         fprintf(stderr,"AQUI 2: %s\n", pmTmp->value);
       }
+      fprintf(stderr, "AQUI antes del json_object\n");
+
       json_object *res3=json_object_new_array();
       fprintf(stderr, "json_object: %s\n", json_object_to_json_string(res3));
       int saved_stdout = zDup (fileno (stdout));
