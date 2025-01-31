@@ -3247,10 +3247,13 @@ int runRequest(map** inputs) {
     // Returns list of processes
 
 
-    else if(strncasecmp(cgiRequestMethod,"GET",3)==0 && (strstr(pcaCgiQueryString,"/processes")!=NULL || strstr(pcaCgiQueryString,"/processes/")!=NULL)){
+    // else if(strncasecmp(cgiRequestMethod,"GET",3)==0 && (strstr(pcaCgiQueryString,"/processes")!=NULL || strstr(pcaCgiQueryString,"/processes/")!=NULL)){
+    else if(strncasecmp(pmCgiRequestMethod->value,"get",3)==0 && (strcmp(pcaCgiQueryString,"/processes")==0 || strcmp(pcaCgiQueryString,"/processes/")==0)){
       /* - /processes */
-        fprintf(stderr,"pcaCgiQueryString: %s\n",pcaCgiQueryString);
-        fprintf(stderr,"cgiRequestMethod: %s\n",cgiRequestMethod);
+
+      fprintf(stderr,"pcaCgiQueryString: %s\n",pcaCgiQueryString);
+      fprintf(stderr,"cgiRequestMethod: %s\n",cgiRequestMethod);
+
       setMapInMaps(pmsaConfig,"lenv","requestType","desc");
       setMapInMaps(pmsaConfig,"lenv","serviceCnt","0");
       setMapInMaps(pmsaConfig,"lenv","serviceCounter","0");
