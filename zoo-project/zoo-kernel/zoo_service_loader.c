@@ -676,6 +676,17 @@ recursReaddirF ( maps * pmsConf, registry *r, void* doc1, void* n1, char *conf_d
                  char *prefix, int saved_stdout, int level,
                  void (func) (registry *, maps *, void*, void*, service *) )
 {
+
+    printf("pmsConf: %p\n", (void*)pmsConf);
+    printf("r: %p\n", (void*)r);
+    printf("doc1: %p\n", doc1);
+    printf("n1: %p\n", n1);
+    printf("conf_dir_: %s\n", conf_dir_);
+    printf("prefix: %s\n", prefix);
+    printf("saved_stdout: %d\n", saved_stdout);
+    printf("level: %d\n", level);
+    printf("func: %p\n", (void*)func);
+
   map* pmHasSearchPath=getMapFromMaps(pmsConf,"main","search_path");
   // if services namespace is present in the map, conf_dir will
   // point to the namespace services path else it will point to
@@ -3294,7 +3305,7 @@ int runRequest(map** inputs) {
       fprintf(stderr, "saved_stdout: %d\n", saved_stdout);
       zDup2 (fileno (stderr), fileno (stdout));
 
-      int res0 = recursReaddirF(pmsaConfig, NULL, (void*) res3, NULL, ntmp, NULL, saved_stdout, 0, printGetCapabilitiesForProcessJ);
+      int res0 = recursReaddirF(pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0, printGetCapabilitiesForProcessJ);
 
       if (res0 < 0) {
           fprintf(stderr, "Error: recursReaddirF returned %d\n", res0);
