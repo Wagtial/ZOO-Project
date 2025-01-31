@@ -3290,18 +3290,22 @@ int runRequest(map** inputs) {
 
       json_object *res3=json_object_new_array();
 
-      const char *json_str = json_object_to_json_string(res3);
-      fprintf(stderr, "JSON Object: %s\n", json_str);
-
       int saved_stdout = zDup (fileno (stdout));
+      fprintf(stderr, "saved_stdout: %d\n", saved_stdout);
       zDup2 (fileno (stderr), fileno (stdout));
-      if (int res0 =
-          recursReaddirF (pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0,
-                          printGetCapabilitiesForProcessJ) < 0) {
+
+      int res0 = recursReaddirF(pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0, printGetCapabilitiesForProcessJ);
+
+      if (res0 < 0) {
+          fprintf(stderr, "Error: recursReaddirF returned %d\n", res0);
       }else{
+        fprintf(stderr, "recursReaddirF returned %d\n", res0);
         fflush(stderr);
         fflush(stdout);
         zDup2 (saved_stdout, fileno (stdout));
+
+        json_str = json_object_to_json_string(res3);
+        fprintf(stderr, "JSON Object after recursReaddirF: %s\n", json_str);
       }
       zClose(saved_stdout);
 #ifdef META_DB
@@ -3318,7 +3322,6 @@ int runRequest(map** inputs) {
       close_sql(pmsaConfig,0);
 #endif
       json_object_object_add(res,"processes",res3);
-      fprintf(stderr,"res: %s\n", res);
       setMapInMaps(pmsaConfig,"lenv","path","processes");
       createNextLinks(pmsaConfig,res);
     }
