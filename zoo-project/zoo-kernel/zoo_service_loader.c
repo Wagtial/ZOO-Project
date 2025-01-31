@@ -677,6 +677,8 @@ recursReaddirF ( maps * pmsConf, registry *r, void* doc1, void* n1, char *conf_d
                  void (func) (registry *, maps *, void*, void*, service *) )
 {
 
+    // int res0 = recursReaddirF(pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0, printGetCapabilitiesForProcessJ);
+
     printf("pmsConf: %p\n", (void*)pmsConf);
     printf("r: %p\n", (void*)r);
     printf("doc1: %p\n", doc1);
@@ -687,27 +689,33 @@ recursReaddirF ( maps * pmsConf, registry *r, void* doc1, void* n1, char *conf_d
     printf("level: %d\n", level);
     printf("func: %p\n", (void*)func);
 
+    printf("conf_dir: %s\n", conf_dir);
+
   map* pmHasSearchPath=getMapFromMaps(pmsConf,"main","search_path");
   // if services namespace is present in the map, conf_dir will
   // point to the namespace services path else it will point to
   // the default service path
+
+  fprintf(stderr, "pmHasSearchPath: %s\n", pmHasSearchPath);
+  fprintf(stderr, "pmHasSearchPath value: %s\n", pmHasSearchPath->value);
+
   char conf_dir[1024];
   int res=0;
   getServicesNamespacePath(pmsConf,conf_dir_,conf_dir,1024);
   if(pmHasSearchPath!=NULL && strncasecmp(pmHasSearchPath->value,"true",4)==0){
     setMapInMaps(pmsConf,"lenv","can_continue","true");
-    int res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir_,prefix, saved_stdout,
-                            level,func);
-    if(strncmp(conf_dir,conf_dir_,strlen(conf_dir))!=0){
+    int res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir_,prefix, saved_stdout, level,func);
+    fprintf(stderr, "res 1: %d\n", res);
 
+    if(strncmp(conf_dir,conf_dir_,strlen(conf_dir))!=0){
       setMapInMaps(pmsConf,"lenv","can_continue","false");
-      res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir,prefix, saved_stdout,
-                          level,func);
+      res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir,prefix, saved_stdout, level,func);
+      fprintf(stderr, "res 2: %d\n", res);
     }
   }else{
     setMapInMaps(pmsConf,"lenv","can_continue","false");
-    res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir,prefix, saved_stdout,
-                        level,func);
+    res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir,prefix, saved_stdout, level,func);
+    fprintf(stderr, "res 3: %d\n", res);
   }
   return res;
 }
@@ -3302,12 +3310,16 @@ int runRequest(map** inputs) {
       json_object *res3=json_object_new_array();
 
       int saved_stdout = zDup (fileno (stdout));
+
       fprintf(stderr, "saved_stdout: %d\n", saved_stdout);
       const char *json_str = json_object_to_json_string(res3);
       fprintf(stderr, "JSON Object after recursReaddirF: %s\n", json_str);
+
       zDup2 (fileno (stderr), fileno (stdout));
 
       int res0 = recursReaddirF(pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0, printGetCapabilitiesForProcessJ);
+
+                 // recursReaddirF (pmsaConfig, zooRegistry, doc, n, conf_dir, NULL, saved_stdout, 0, printGetCapabilitiesForProcess) < 0)
 
       if (res0 < 0) {
           fprintf(stderr, "Error: recursReaddirF returned %d\n", res0);
