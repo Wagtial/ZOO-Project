@@ -3254,7 +3254,11 @@ int runRequest(map** inputs) {
       setMapInMaps(pmsaConfig,"lenv","requestType","desc");
       setMapInMaps(pmsaConfig,"lenv","serviceCnt","0");
       setMapInMaps(pmsaConfig,"lenv","serviceCounter","0");
-      map* pmTmp=getMap(request_inputs,"limit");
+
+      fprintf(stderr,"request_inputs: %s\n", request_inputs);
+      map* pmTmp=getMap(request_inputs, "limit");
+      fprintf(stderr,"pmTmp: %s\n", pmTmp);
+      fprintf(stderr,"pmTmp->value: %s\n", pmTmp->value);
       if(pmTmp!=NULL) {
         fprintf(stderr,"pmTmp!=NULL: %s\n", pmTmp->value);
         setMapInMaps(pmsaConfig,"lenv","serviceCntLimit",pmTmp->value);
