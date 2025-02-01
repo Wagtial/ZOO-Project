@@ -696,7 +696,7 @@ recursReaddirF ( maps * pmsConf, registry *r, void* doc1, void* n1, char *conf_d
 
   fprintf(stderr, "pmHasSearchPath: %s\n", pmHasSearchPath);
 
-  char conf_dir[1024];
+  char conf_dir[1024] = {0};
   int res=0;
 
   printf("pmsConf: %p\n", (void*)pmsConf);
@@ -705,7 +705,10 @@ recursReaddirF ( maps * pmsConf, registry *r, void* doc1, void* n1, char *conf_d
 
   getServicesNamespacePath(pmsConf,conf_dir_,conf_dir,1024);
 
+  printf("conf_dir: %s\n", conf_dir);
+
   if(pmHasSearchPath!=NULL && strncasecmp(pmHasSearchPath->value,"true",4)==0){
+    printf("if true");
     setMapInMaps(pmsConf,"lenv","can_continue","true");
     int res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir_, prefix, saved_stdout, level,func);
     if(strncmp(conf_dir,conf_dir_,strlen(conf_dir))!=0){
@@ -713,6 +716,7 @@ recursReaddirF ( maps * pmsConf, registry *r, void* doc1, void* n1, char *conf_d
       res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir, prefix, saved_stdout, level,func);
     }
   }else{
+    printf("if else");
     setMapInMaps(pmsConf,"lenv","can_continue","false");
     res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir,prefix, saved_stdout, level,func);
   }
