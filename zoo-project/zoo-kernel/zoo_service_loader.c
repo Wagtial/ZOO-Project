@@ -716,6 +716,8 @@ recursReaddirF ( maps * pmsConf, registry *r, void* doc1, void* n1, char *conf_d
     setMapInMaps(pmsConf,"lenv","can_continue","false");
     res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir,prefix, saved_stdout, level,func);
   }
+
+  printf("res: %s\n", res);
   return res;
 }
 
