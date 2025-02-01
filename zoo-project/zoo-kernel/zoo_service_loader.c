@@ -671,11 +671,9 @@ _recursReaddirF ( maps * m, registry *r, void* doc1, void* n1, char *conf_dir,
  *  (registry*, maps*, xmlNodePtr and service*).
  * @see recursReaddirF
  */
-int
-recursReaddirF ( maps * pmsConf, registry *r, void* doc1, void* n1, char *conf_dir_,
+int recursReaddirF( maps * pmsConf, registry *r, void* doc1, void* n1, char *conf_dir_,
                  char *prefix, int saved_stdout, int level,
-                 void (func) (registry *, maps *, void*, void*, service *) )
-{
+                 void (func) (registry *, maps *, void*, void*, service *)) {
 
     // int res0 = recursReaddirF(pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0, printGetCapabilitiesForProcessJ);
 
@@ -3328,6 +3326,8 @@ int runRequest(map** inputs) {
       int res0 = recursReaddirF(pmsaConfig, NULL, res3, NULL, ntmp, NULL, saved_stdout, 0, printGetCapabilitiesForProcessJ);
 
                  // recursReaddirF (pmsaConfig, zooRegistry, doc, n, conf_dir, NULL, saved_stdout, 0, printGetCapabilitiesForProcess) < 0)
+
+      fprintf(stderr, "recursReaddirF returned %d\n", res0);
 
       if (res0 < 0) {
           fprintf(stderr, "Error: recursReaddirF returned %d\n", res0);
