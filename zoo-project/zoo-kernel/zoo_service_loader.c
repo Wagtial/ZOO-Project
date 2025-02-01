@@ -708,7 +708,7 @@ recursReaddirF ( maps * pmsConf, registry *r, void* doc1, void* n1, char *conf_d
   printf("conf_dir: %s\n", conf_dir);
 
   if(pmHasSearchPath!=NULL && strncasecmp(pmHasSearchPath->value,"true",4)==0){
-    printf("if true");
+    printf("if true \n");
     setMapInMaps(pmsConf,"lenv","can_continue","true");
     int res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir_, prefix, saved_stdout, level,func);
     if(strncmp(conf_dir,conf_dir_,strlen(conf_dir))!=0){
@@ -716,12 +716,15 @@ recursReaddirF ( maps * pmsConf, registry *r, void* doc1, void* n1, char *conf_d
       res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir, prefix, saved_stdout, level,func);
     }
   }else{
-    printf("if else");
+    printf("if else \n");
     setMapInMaps(pmsConf,"lenv","can_continue","false");
-    res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir,prefix, saved_stdout, level,func);
+    printf("if else setMapInMaps \n");
+    res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir, prefix, saved_stdout, level,func);
+    printf("res else start: \n");
+    printf("res else: %d\n", res);
   }
 
-  printf("res: %s\n", res);
+  printf("res final: %d\n", res);
   return res;
 }
 
