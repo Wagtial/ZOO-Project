@@ -488,11 +488,9 @@ void setRootUrlMap(maps* pmConf){
  *  (registry*, maps*, xmlDocPtr, xmlNodePtr, and service*).
  * @see inheritance, readServiceFile
  */
-int
-_recursReaddirF ( maps * m, registry *r, void* doc1, void* n1, char *conf_dir,
+int _recursReaddirF( maps * m, registry *r, void* doc1, void* n1, char *conf_dir,
                  char *prefix, int saved_stdout, int level,
-                 void (func) (registry *, maps *, void*, void*, service *) )
-{
+                 void (func) (registry *, maps *, void*, void*, service *)) {
 
   struct dirent *dp;
   int scount = 0;
@@ -634,11 +632,15 @@ _recursReaddirF ( maps * m, registry *r, void* doc1, void* n1, char *conf_dir,
               free (tmpsn);
               tmpsn=NULL;
 #endif
+              printf("AQUI\n");
               if(compareCnt(m,"serviceCntLimit","equal")){
+                printf("AQUI if 1\n");
                 // In case we are willing to count the number of services, we
                 // can still continue and not return any value bellow
                 if(getMapFromMaps(m,"lenv","serviceCntNext")==NULL)
+                  printf("AQUI if 2\n");
                   setMapInMaps(m,"lenv","serviceCntNext","true");
+                  printf("AQUI if 2.1\n");
                 //(void) closedir (dirp);
                 //return 1;
               }
@@ -717,7 +719,7 @@ int recursReaddirF( maps * pmsConf, registry *r, void* doc1, void* n1, char *con
     printf("if else \n");
     setMapInMaps(pmsConf,"lenv","can_continue","false");
     printf("if else setMapInMaps \n");
-    res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir, prefix, saved_stdout, level,func);
+    res=_recursReaddirF(pmsConf, r, doc1, n1, conf_dir, prefix, saved_stdout, level, func);
     printf("res else start: \n");
     printf("res else: %d\n", res);
   }
