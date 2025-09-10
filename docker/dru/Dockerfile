@@ -11,6 +11,8 @@ ENV DEBIAN_FRONTEND noninteractive
 ########################################
 ### DEV TOOLS
 RUN apt-get update -qqy --no-install-recommends \
+    # Required for security fixes
+    && apt-get upgrade -y \
     # Various cli tools
     && apt-get install -qqy --no-install-recommends wget mlocate tree \
     # C++ and CMAKE
@@ -155,6 +157,7 @@ RUN git clone --depth 1 https://github.com/swagger-api/swagger-ui.git \
     && mv /var/www/html/swagger-ui/dist /var/www/html/swagger-ui/oapip
 
 COPY docker/dru/default.conf /etc/apache2/sites-available/000-default.conf
+COPY zoo-project/zoo-services/utils/open-api/dru/DetectEntrypoint.py /usr/lib/cgi-bin
 COPY zoo-project/zoo-services/utils/open-api/dru/DeployProcess.py /usr/lib/cgi-bin
 COPY zoo-project/zoo-services/utils/open-api/dru/DeployProcess.zcfg /usr/lib/cgi-bin
 COPY zoo-project/zoo-services/utils/open-api/dru/UndeployProcess.py /usr/lib/cgi-bin
@@ -166,6 +169,17 @@ RUN chmod -R 777 /usr/lib/cgi-bin
 
 
 ARG DEPS_TO_REMOVE="\
+    libc6-dev\
+    libcrypt-dev\
+    icu-devtools\
+    libc-dev-bin\
+    libgcc-11-dev\
+    libglib2.0-dev-bin\
+    libnsl-dev\
+    libtirpc-dev\
+    linux-libc-dev\
+    python3-zipp\
+    python3-pip\
     dpkg-dev\
     unixodbc-dev\
     python3.10-dev\
@@ -270,7 +284,7 @@ RUN date && mkdir /tmp/cookiecutter-templates && \
     git clone https://github.com/EOEPCA/cwl-wrapper.git && \
     cd cwl-wrapper/ && \
     python3 setup.py install && \
-    pip install --upgrade setuptools cryptography PyJWT && \
+    pip install --upgrade setuptools cryptography PyJWT pip zipp urllib3 && \
     cd .. && \
     rm -r pycalrissian cwl-wrapper /tmp/requirements.txt && \
     chmod -R 777 /tmp/cookiecutter-templates && \
